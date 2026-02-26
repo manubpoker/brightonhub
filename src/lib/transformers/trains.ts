@@ -1,6 +1,6 @@
 import type { DarwinStationBoardResponse, DarwinServiceResponse } from '@/types/api';
-import type { TrainService, TrainStationStatus, HazardAlert, Severity } from '@/types/domain';
-import { BRIGHTON_LAT, BRIGHTON_LNG, TRANSPORT_SEVERITY_THRESHOLDS } from '@/lib/constants';
+import type { TrainService, TrainStationStatus, Severity } from '@/types/domain';
+import { TRANSPORT_SEVERITY_THRESHOLDS } from '@/lib/constants';
 
 export type TrainData = TrainStationStatus;
 
@@ -73,19 +73,3 @@ export function transformTrainResponse(raw: DarwinStationBoardResponse): TrainDa
   };
 }
 
-export function createTransportAlert(data: TrainData): HazardAlert {
-  const disrupted = data.departures.filter((s) => s.status !== 'on-time').length;
-  return {
-    id: 'transport-trains',
-    source: 'transport',
-    severity: data.severity,
-    title: disrupted > 0
-      ? `${disrupted} train service${disrupted > 1 ? 's' : ''} disrupted`
-      : 'All trains running on time',
-    description: data.disruptions.length > 0
-      ? data.disruptions[0]
-      : `${data.departures.length} departures from ${data.stationName}`,
-    location: { lat: BRIGHTON_LAT, lng: BRIGHTON_LNG },
-    timestamp: new Date().toISOString(),
-  };
-}

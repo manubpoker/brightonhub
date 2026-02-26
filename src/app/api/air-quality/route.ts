@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import { UKAIR_API_URL } from '@/lib/constants';
 import { transformAirQualityFromTimeseries } from '@/lib/transformers/air-quality';
 
-export const dynamic = 'force-dynamic';
-
 interface TimeseriesItem {
   id: number;
   label: string;
@@ -24,6 +22,7 @@ export async function GET() {
     // Coordinates are [lat, lng, NaN] format
     const res = await fetch(`${UKAIR_API_URL}/timeseries?expanded=true`, {
       next: { revalidate: 600 },
+      signal: AbortSignal.timeout(8000),
     });
 
     if (!res.ok) {

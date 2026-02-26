@@ -133,6 +133,7 @@ export async function GET() {
       },
       body: soapBody,
       next: { revalidate: 60 },
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!res.ok) {

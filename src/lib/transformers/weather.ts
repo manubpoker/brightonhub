@@ -1,6 +1,6 @@
 import type { OpenMeteoResponse } from '@/types/api';
-import type { WeatherCurrent, WeatherDaily, WeatherHourly, WeatherOverview, HazardAlert, Severity } from '@/types/domain';
-import { BRIGHTON_LAT, BRIGHTON_LNG, WMO_WEATHER_CODES } from '@/lib/constants';
+import type { WeatherCurrent, WeatherDaily, WeatherHourly, WeatherOverview, Severity } from '@/types/domain';
+import { WMO_WEATHER_CODES } from '@/lib/constants';
 
 export type WeatherData = WeatherOverview;
 
@@ -67,14 +67,3 @@ export function transformWeatherResponse(raw: OpenMeteoResponse): WeatherData {
   return { current, daily, hourly, severity };
 }
 
-export function createWeatherAlert(data: WeatherData): HazardAlert {
-  return {
-    id: 'weather-current',
-    source: 'planning', // reuse existing source type — weather is informational
-    severity: data.severity,
-    title: `${data.current.temperature.toFixed(0)}°C — ${data.current.weatherDescription}`,
-    description: `Wind: ${data.current.windSpeed.toFixed(0)} km/h, Humidity: ${data.current.humidity}%`,
-    location: { lat: BRIGHTON_LAT, lng: BRIGHTON_LNG },
-    timestamp: data.current.time,
-  };
-}

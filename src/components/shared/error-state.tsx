@@ -13,9 +13,9 @@ export function ErrorState({
   return (
     <Card>
       <CardContent className="py-12 text-center">
-        <AlertTriangle className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-        <p className="text-lg font-medium text-gray-600">{title}</p>
-        <p className="text-gray-500 mt-1">{message}</p>
+        <AlertTriangle className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
+        <p className="text-lg font-medium text-foreground">{title}</p>
+        <p className="text-muted-foreground mt-1">{message}</p>
       </CardContent>
     </Card>
   );

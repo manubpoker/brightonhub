@@ -17,8 +17,9 @@ import { useEntertainment } from '@/lib/hooks/use-entertainment';
 import { CARBON_INDEX_TO_SEVERITY } from '@/lib/constants';
 import type { Severity } from '@/types/domain';
 import { formatTimeAgo } from '@/lib/utils';
-import { Activity } from 'lucide-react';
+import { Activity, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 function useEnvironmentStatus() {
   const carbon = useCarbon();
@@ -231,7 +232,7 @@ export default function PortalHomepage() {
           <h1 className="text-3xl font-bold">Brighton Hub</h1>
           <Badge variant="secondary" className="hidden sm:inline-flex">BN1</Badge>
         </div>
-        <p className="text-gray-500 max-w-2xl">
+        <p className="text-muted-foreground max-w-2xl">
           Real-time civic data for Brighton & Hove residents. Monitor environmental conditions, weather, crime, transport, planning, health services, housing, schools, and community support in one place.
         </p>
       </div>
@@ -250,6 +251,49 @@ export default function PortalHomepage() {
           );
         })}
       </div>
+
+      {/* About this platform */}
+      <Card className="mt-8">
+        <CardContent className="py-4">
+          <p className="text-sm text-muted-foreground">
+            Brighton Hub combines open data from UK government APIs into a single civic dashboard.
+            All data is sourced from official providers including the Environment Agency, Police.uk,
+            National Rail, DEFRA, HM Land Registry, and NHS England — updated automatically throughout
+            the day. No registration required.
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Quick Links */}
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <ExternalLink className="h-4 w-4 text-green-600" />
+            Quick Links
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {[
+              { label: 'Brighton & Hove City Council', url: 'https://www.brighton-hove.gov.uk/' },
+              { label: 'Visit Brighton', url: 'https://www.visitbrighton.com/' },
+              { label: 'Sussex Police', url: 'https://www.sussex.police.uk/' },
+              { label: 'NHS Sussex', url: 'https://www.sussex.ics.nhs.uk/' },
+            ].map(({ label, url }) => (
+              <a
+                key={label}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-lg border p-3 text-sm text-blue-600 hover:bg-accent transition-colors"
+              >
+                <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                {label}
+              </a>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import type { FloodWarningsResponse, FloodStationsResponse } from '@/types/api';
 import type { FloodWarning, FloodStation, HazardAlert, Severity } from '@/types/domain';
 import { FLOOD_SEVERITY_MAP, BRIGHTON_LAT, BRIGHTON_LNG } from '@/lib/constants';
 
@@ -10,29 +11,24 @@ export interface FloodStationsData {
   stations: FloodStation[];
 }
 
-export function transformFloodWarnings(raw: unknown): FloodWarningsData {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const data = raw as any;
-  const items = data?.items ?? [];
+export function transformFloodWarnings(raw: FloodWarningsResponse): FloodWarningsData {
+  const items = raw?.items ?? [];
 
-  const warnings: FloodWarning[] = items.map(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (item: any) => {
-      const severityLevel = item.severityLevel ?? 4;
-      const severity: Severity = FLOOD_SEVERITY_MAP[severityLevel] ?? 'normal';
+  const warnings: FloodWarning[] = items.map((item) => {
+    const severityLevel = item.severityLevel ?? 4;
+    const severity: Severity = FLOOD_SEVERITY_MAP[severityLevel] ?? 'normal';
 
-      return {
-        id: item['@id'] ?? item.floodAreaID ?? '',
-        severity,
-        severityLevel,
-        title: item.description ?? 'Flood warning',
-        description: item.message ?? '',
-        area: item.eaAreaName ?? '',
-        timeRaised: item.timeRaised ?? '',
-        timeUpdated: item.timeMessageChanged ?? item.timeSeverityChanged ?? '',
-      };
-    }
-  );
+    return {
+      id: item['@id'] ?? item.floodAreaID ?? '',
+      severity,
+      severityLevel,
+      title: item.description ?? 'Flood warning',
+      description: item.message ?? '',
+      area: item.eaAreaName ?? '',
+      timeRaised: item.timeRaised ?? '',
+      timeUpdated: item.timeMessageChanged ?? item.timeSeverityChanged ?? '',
+    };
+  });
 
   // Sort by severity (most severe first)
   warnings.sort((a, b) => a.severityLevel - b.severityLevel);
@@ -52,16 +48,12 @@ export function transformFloodWarnings(raw: unknown): FloodWarningsData {
   return { warnings, alerts };
 }
 
-export function transformFloodStations(raw: unknown): FloodStationsData {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const data = raw as any;
-  const items = data?.items ?? [];
+export function transformFloodStations(raw: FloodStationsResponse): FloodStationsData {
+  const items = raw?.items ?? [];
 
   const stations: FloodStation[] = items
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .filter((item: any) => item.lat && item.long)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .map((item: any) => {
+    .filter((item) => item.lat && item.long)
+    .map((item) => {
       // measures can be an array or a single object
       const measures = Array.isArray(item.measures)
         ? item.measures
@@ -70,8 +62,7 @@ export function transformFloodStations(raw: unknown): FloodStationsData {
           : [];
 
       const primaryMeasure = measures.find(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (m: any) => m.parameter === 'level' || m.parameterName === 'Water Level'
+        (m) => m.parameter === 'level' || m.parameterName === 'Water Level'
       ) ?? measures[0];
 
       return {

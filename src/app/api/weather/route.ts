@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import { OPENMETEO_API_URL, BRIGHTON_LAT, BRIGHTON_LNG } from '@/lib/constants';
 import { transformWeatherResponse } from '@/lib/transformers/weather';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
   try {
     const params = new URLSearchParams({
@@ -18,6 +16,7 @@ export async function GET() {
 
     const res = await fetch(`${OPENMETEO_API_URL}/forecast?${params}`, {
       next: { revalidate: 1800 },
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!res.ok) {

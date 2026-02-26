@@ -158,6 +158,16 @@ export const FLOOD_SEVERITY_MAP: Record<number, 'severe' | 'warning' | 'alert' |
   4: 'normal',
 };
 
+// Crime area badge colors for UI
+export const CRIME_AREA_COLORS: Record<string, string> = {
+  BN1: 'bg-red-100 text-red-700',
+  BN2: 'bg-orange-100 text-orange-700',
+  BN3: 'bg-purple-100 text-purple-700',
+  BN41: 'bg-cyan-100 text-cyan-700',
+  BN42: 'bg-fuchsia-100 text-fuchsia-700',
+  BN43: 'bg-lime-100 text-lime-700',
+};
+
 // Crime severity thresholds — per-area counts
 // Brighton typically sees ~1000-1500 crimes per BN area per month
 export const CRIME_SEVERITY_THRESHOLDS = {

@@ -42,8 +42,8 @@ export function FacilityList({ facilities }: FacilityListProps) {
             className={cn(
               'rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
               filter === null
-                ? 'bg-gray-900 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-foreground text-background'
+                : 'bg-muted text-muted-foreground hover:bg-accent'
             )}
           >
             All ({facilities.length})
@@ -57,8 +57,8 @@ export function FacilityList({ facilities }: FacilityListProps) {
                 className={cn(
                   'rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
                   filter === type
-                    ? 'bg-gray-900 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-foreground text-background'
+                    : 'bg-muted text-muted-foreground hover:bg-accent'
                 )}
               >
                 {TYPE_LABELS[type]} ({count})
@@ -75,7 +75,7 @@ export function FacilityList({ facilities }: FacilityListProps) {
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{facility.name}</p>
                 {facility.postcode && (
-                  <p className="text-xs text-gray-500">{facility.postcode}</p>
+                  <p className="text-xs text-muted-foreground">{facility.postcode}</p>
                 )}
               </div>
               <Badge className={TYPE_COLORS[facility.type]}>
@@ -84,7 +84,7 @@ export function FacilityList({ facilities }: FacilityListProps) {
             </div>
           ))}
           {filtered.length === 0 && (
-            <p className="text-sm text-gray-500 text-center py-4">No facilities found</p>
+            <p className="text-sm text-muted-foreground text-center py-4">No facilities found</p>
           )}
         </div>
       </CardContent>

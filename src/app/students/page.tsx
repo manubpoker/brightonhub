@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen, GraduationCap, Heart, CreditCard, Bus, TrainFront, Stethoscope, HandHeart, Tag, ShoppingBag, Music, ExternalLink } from 'lucide-react';
+import { BookOpen, GraduationCap, Heart, CreditCard, Bus, TrainFront, Stethoscope, HandHeart, Tag, ShoppingBag, Music, ExternalLink, Info } from 'lucide-react';
 
 export const metadata = {
   title: 'Student Hub — Brighton Hub',
@@ -78,7 +78,7 @@ export default function StudentsPage() {
           <BookOpen className="h-6 w-6 text-orange-600" />
           Student Hub
         </h1>
-        <p className="text-gray-500 mt-2 max-w-2xl">
+        <p className="text-muted-foreground mt-2 max-w-2xl">
           Essential resources, discounts, and local knowledge for University of Sussex
           and University of Brighton students living in Brighton &amp; Hove.
         </p>
@@ -96,7 +96,7 @@ export default function StudentsPage() {
             <CardHeader className="pb-2">
               <CardTitle className="text-base">University of Sussex</CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-gray-600 space-y-2">
+            <CardContent className="text-sm text-muted-foreground space-y-2">
               <p><ExtLink href="https://sussex.ac.uk/students/">Student Portal</ExtLink> — Timetables, email, Sussex Direct</p>
               <p><ExtLink href="https://www.sussexstudent.com/">Sussex Students&apos; Union</ExtLink> — Events, societies, support</p>
               <p><ExtLink href="https://www.sussex.ac.uk/library/">Library</ExtLink> — 24/7 access during term, online resources</p>
@@ -108,7 +108,7 @@ export default function StudentsPage() {
             <CardHeader className="pb-2">
               <CardTitle className="text-base">University of Brighton</CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-gray-600 space-y-2">
+            <CardContent className="text-sm text-muted-foreground space-y-2">
               <p><ExtLink href="https://studentcentral.brighton.ac.uk/">Student Portal</ExtLink> — StudentCentral, Blackboard, email</p>
               <p><ExtLink href="https://www.brightonsu.com/">Brighton SU</ExtLink> — Events, societies, advice</p>
               <p><ExtLink href="https://www.brighton.ac.uk/studying-here/library/index.aspx">Library</ExtLink> — Multiple campus libraries &amp; e-resources</p>
@@ -133,7 +133,7 @@ export default function StudentsPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-sm">{resource.title}</h3>
-                      <p className="text-xs text-gray-500 mt-1">{resource.description}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{resource.description}</p>
                       <div className="mt-2">
                         <ExtLink href={resource.link.url}>
                           <span className="text-xs">{resource.link.label}</span>
@@ -159,7 +159,7 @@ export default function StudentsPage() {
             <CardHeader className="pb-2">
               <CardTitle className="text-base">TOTUM / NUS Card</CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-gray-600 space-y-2">
+            <CardContent className="text-sm text-muted-foreground space-y-2">
               <p>
                 The <ExtLink href="https://www.totum.com/">TOTUM card</ExtLink> (formerly NUS Extra)
                 gives you access to hundreds of student discounts — restaurants, shops, tech, travel, and more.
@@ -174,7 +174,7 @@ export default function StudentsPage() {
                 Budget-Friendly Brighton
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-gray-600 space-y-2">
+            <CardContent className="text-sm text-muted-foreground space-y-2">
               <p><strong>North Laine</strong> — Independent shops, vintage stores, and affordable eateries</p>
               <p><strong>London Road</strong> — Budget supermarkets, street food, and discount stores</p>
               <p><strong>Open Market</strong> — Fresh produce, street food, and local traders</p>
@@ -190,7 +190,7 @@ export default function StudentsPage() {
           <Music className="h-5 w-5 text-orange-600" />
           Nightlife &amp; Social
         </h2>
-        <p className="text-sm text-gray-500 mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           Brighton&apos;s nightlife is one of the best on the south coast. Most venues offer
           weekly student nights with discounted entry and drinks.
         </p>
@@ -200,9 +200,9 @@ export default function StudentsPage() {
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <h3 className="font-semibold text-sm">{venue.name}</h3>
-                  <p className="text-xs text-gray-500">{venue.note}</p>
+                  <p className="text-xs text-muted-foreground">{venue.note}</p>
                 </div>
-                <Badge variant="secondary" className="text-xs bg-orange-50 text-orange-700 shrink-0">
+                <Badge variant="secondary" className="text-xs bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 shrink-0">
                   Student nights
                 </Badge>
               </CardContent>
@@ -210,6 +210,63 @@ export default function StudentsPage() {
           ))}
         </div>
       </section>
+
+      {/* Key Terms */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Info className="h-4 w-4 text-purple-500" />
+            Key Terms
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[
+              { term: 'TOTUM', definition: 'The official student discount card (formerly NUS Extra) — accepted at hundreds of retailers and restaurants' },
+              { term: 'Railcard', definition: '16-25 or 26-30 Railcard gives 1/3 off rail fares across Great Britain for £30/year' },
+              { term: 'SU', definition: 'Students\' Union — your elected student body providing events, societies, advice, and representation' },
+              { term: 'Freshers', definition: 'Freshers\' Week is the first week of term with welcome events, society fairs, and social activities' },
+            ].map(({ term, definition }) => (
+              <div key={term} className="rounded-lg border p-3">
+                <Badge variant="secondary" className="text-xs mb-1">{term}</Badge>
+                <p className="text-xs text-muted-foreground">{definition}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Useful Links */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <ExternalLink className="h-4 w-4 text-green-600" />
+            Useful Links
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {[
+              { label: 'UKCISA — International Students', url: 'https://www.ukcisa.org.uk/' },
+              { label: 'Student Finance England', url: 'https://www.gov.uk/student-finance' },
+              { label: 'Save the Student', url: 'https://www.savethestudent.org/' },
+              { label: 'UNiDAYS — Student Discounts', url: 'https://www.myunidays.com/' },
+              { label: 'StudentBeans', url: 'https://www.studentbeans.com/' },
+            ].map(({ label, url }) => (
+              <a
+                key={label}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-lg border p-3 text-sm text-blue-600 hover:bg-accent transition-colors"
+              >
+                <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                {label}
+              </a>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

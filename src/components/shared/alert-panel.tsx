@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertTriangle, Waves, Wind, Zap, Shield, Train, Landmark, HeartPulse, Home, GraduationCap, HandHeart, Ticket } from 'lucide-react';
+import { AlertTriangle, Waves, Wind, Zap, Shield, Train, Landmark, HeartPulse, Home, GraduationCap, HandHeart, Ticket, CloudSun } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -14,6 +14,7 @@ const sourceIcons: Record<HazardSource, typeof Waves> = {
   crime: Shield,
   transport: Train,
   planning: Landmark,
+  weather: CloudSun,
   health: HeartPulse,
   housing: Home,
   schools: GraduationCap,
@@ -72,7 +73,7 @@ export function AlertPanel({ alerts, loading }: AlertPanelProps) {
       </CardHeader>
       <CardContent>
         {nonNormalAlerts.length === 0 ? (
-          <p className="text-sm text-gray-500 py-4 text-center">
+          <p className="text-sm text-muted-foreground py-4 text-center">
             No active alerts — all systems normal
           </p>
         ) : (
@@ -82,7 +83,7 @@ export function AlertPanel({ alerts, loading }: AlertPanelProps) {
               return (
                 <div
                   key={alert.id}
-                  className="flex gap-3 rounded-lg border p-3 transition-colors hover:bg-gray-50"
+                  className="flex gap-3 rounded-lg border p-3 transition-colors hover:bg-accent"
                 >
                   <Icon
                     className={cn(
@@ -105,10 +106,10 @@ export function AlertPanel({ alerts, loading }: AlertPanelProps) {
                         {alert.severity}
                       </Badge>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                    <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                       {alert.description}
                     </p>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-muted-foreground/70 mt-1">
                       {formatTimeAgo(alert.timestamp)}
                     </p>
                   </div>

@@ -118,15 +118,15 @@ export interface UKAirTimeseriesResponse {
       label: string;
     };
     geometry: {
-      coordinates: [number, number];
+      coordinates: number[];
     };
   };
-  lastValue: {
+  lastValue?: {
     timestamp: number;
     value: number;
   };
-  parameters: {
-    phenomenon: {
+  parameters?: {
+    phenomenon?: {
       id: number;
       label: string;
     };

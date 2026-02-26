@@ -3,13 +3,11 @@ import { NHS_ODS_API_URL, BRIGHTON_POSTCODES, POSTCODES_IO_API_URL } from '@/lib
 import { transformHealthResponse } from '@/lib/transformers/health';
 import type { NhsOdsOrganisation } from '@/types/api';
 
-export const dynamic = 'force-dynamic';
-
 const ROLE_IDS = ['RO177', 'RO197', 'RO108', 'RO110']; // GPs, pharmacies, hospitals, dentists
 
 async function fetchOrgs(postcode: string, roleId: string): Promise<NhsOdsOrganisation[]> {
   const url = `${NHS_ODS_API_URL}?PostCode=${postcode}&Status=Active&PrimaryRoleId=${roleId}`;
-  const res = await fetch(url, { next: { revalidate: 21600 } });
+  const res = await fetch(url, { next: { revalidate: 21600 }, signal: AbortSignal.timeout(10000) });
   if (!res.ok) return [];
   const data = await res.json();
   return data.Organisations ?? [];
@@ -25,26 +23,33 @@ async function geocodePostcodes(postcodes: string[]): Promise<Map<string, { lat:
     batches.push(postcodes.slice(i, i + 100));
   }
 
-  for (const batch of batches) {
-    try {
-      const res = await fetch(POSTCODES_IO_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ postcodes: batch }),
-        next: { revalidate: 86400 },
-      });
-      if (!res.ok) continue;
-      const data = await res.json();
-      for (const entry of data.result ?? []) {
-        if (entry.result?.latitude && entry.result?.longitude) {
-          map.set(entry.query, {
-            lat: entry.result.latitude,
-            lng: entry.result.longitude,
-          });
-        }
+  const batchResults = await Promise.all(
+    batches.map(async (batch) => {
+      try {
+        const res = await fetch(POSTCODES_IO_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ postcodes: batch }),
+          next: { revalidate: 86400 },
+          signal: AbortSignal.timeout(10000),
+        });
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.result ?? [];
+      } catch {
+        return [];
       }
-    } catch {
-      // Continue without geocoding on failure
+    })
+  );
+
+  for (const results of batchResults) {
+    for (const entry of results) {
+      if (entry.result?.latitude && entry.result?.longitude) {
+        map.set(entry.query, {
+          lat: entry.result.latitude,
+          lng: entry.result.longitude,
+        });
+      }
     }
   }
 

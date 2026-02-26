@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Activity, Waves, Wind, Zap, Shield, Train, Landmark, CloudSun, Droplets, ExternalLink, Scale } from 'lucide-react';
+import { Activity, Waves, Wind, Zap, Shield, Train, Landmark, CloudSun, Droplets, ExternalLink, Scale, BookOpen } from 'lucide-react';
 
 const dataSources = [
   {
@@ -86,7 +86,7 @@ export default function AboutPage() {
           <Activity className="h-6 w-6 text-green-600" />
           About Brighton Hub
         </h1>
-        <p className="text-gray-500 mt-2 max-w-2xl">
+        <p className="text-muted-foreground mt-2 max-w-2xl">
           A multi-dashboard civic platform that combines environmental monitoring, weather, crime data,
           transport, planning, health, housing, schools, community resources, events, and a student hub
           into a single view for Brighton &amp; Hove residents.
@@ -98,7 +98,7 @@ export default function AboutPage() {
         <CardHeader>
           <CardTitle>Why This Platform?</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm text-gray-600">
+        <CardContent className="space-y-3 text-sm text-muted-foreground">
           <p>
             Brighton &amp; Hove faces simultaneous civic challenges — coastal flooding, air quality concerns,
             crime patterns, transport disruptions, and rapid development — all monitored
@@ -122,13 +122,13 @@ export default function AboutPage() {
               <Card key={source.name}>
                 <CardContent className="p-5">
                   <div className="flex items-start gap-4">
-                    <Icon className="h-8 w-8 text-gray-400 shrink-0 mt-1" />
+                    <Icon className="h-8 w-8 text-muted-foreground/70 shrink-0 mt-1" />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <h3 className="font-semibold">{source.name}</h3>
                         <Badge variant="secondary">{source.updates}</Badge>
                       </div>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p className="text-sm text-muted-foreground mt-1">
                         {source.description}
                       </p>
                       <div className="flex items-center gap-4 mt-3 text-sm">
@@ -141,7 +141,7 @@ export default function AboutPage() {
                           <ExternalLink className="h-3.5 w-3.5" />
                           Documentation
                         </a>
-                        <span className="flex items-center gap-1 text-gray-500">
+                        <span className="flex items-center gap-1 text-muted-foreground">
                           <Scale className="h-3.5 w-3.5" />
                           {source.licence}
                         </span>
@@ -162,12 +162,12 @@ export default function AboutPage() {
         <CardHeader>
           <CardTitle className="text-base">Licencing & Attribution</CardTitle>
         </CardHeader>
-        <CardContent className="text-sm text-gray-600 space-y-2">
+        <CardContent className="text-sm text-muted-foreground space-y-2">
           <p>
             This platform contains public sector information licensed under the{' '}
             <a
               href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
-              className="underline hover:text-gray-800"
+              className="underline hover:text-foreground"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -179,7 +179,7 @@ export default function AboutPage() {
             Carbon intensity data is provided by National Grid ESO under{' '}
             <a
               href="https://creativecommons.org/licenses/by/4.0/"
-              className="underline hover:text-gray-800"
+              className="underline hover:text-foreground"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -191,7 +191,7 @@ export default function AboutPage() {
             Map tiles are provided by{' '}
             <a
               href="https://www.openstreetmap.org/copyright"
-              className="underline hover:text-gray-800"
+              className="underline hover:text-foreground"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -199,6 +199,32 @@ export default function AboutPage() {
             </a>{' '}
             contributors.
           </p>
+        </CardContent>
+      </Card>
+
+      {/* Key Terms */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <BookOpen className="h-4 w-4 text-purple-500" />
+            Key Terms
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[
+              { term: 'OGL', definition: 'Open Government Licence — allows free reuse of UK government data with attribution' },
+              { term: 'CC BY 4.0', definition: 'Creative Commons Attribution 4.0 — permits sharing and adapting with credit to the creator' },
+              { term: 'API', definition: 'Application Programming Interface — a structured way for software to request data from a service' },
+              { term: 'TanStack Query', definition: 'A data-fetching library that handles caching, polling, and background updates automatically' },
+              { term: 'Severity System', definition: 'The 4-level scale (Normal, Alert, Warning, Severe) used across all dashboards for consistent risk communication' },
+            ].map(({ term, definition }) => (
+              <div key={term} className="rounded-lg border p-3">
+                <Badge variant="secondary" className="text-xs mb-1">{term}</Badge>
+                <p className="text-xs text-muted-foreground">{definition}</p>
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
 

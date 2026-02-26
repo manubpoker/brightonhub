@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { FLOOD_API_URL } from '@/lib/constants';
 import { transformFloodWarnings } from '@/lib/transformers/flood';
-
-export const dynamic = 'force-dynamic';
+import type { FloodWarningsResponse } from '@/types/api';
 
 export async function GET() {
   try {
@@ -11,18 +10,18 @@ export async function GET() {
     const fetches = counties.map((county) =>
       fetch(
         `${FLOOD_API_URL}/id/floods?county=${encodeURIComponent(county)}`,
-        { next: { revalidate: 300 } }
+        { next: { revalidate: 300 }, signal: AbortSignal.timeout(10000) }
       ).then((r) => (r.ok ? r.json() : { items: [] }))
     );
 
-    const results = await Promise.all(fetches);
+    const results: FloodWarningsResponse[] = await Promise.all(fetches);
 
     // Combine and deduplicate by @id
     const seen = new Set<string>();
-    const allItems: unknown[] = [];
+    const allItems: FloodWarningsResponse['items'] = [];
     for (const result of results) {
       for (const item of result?.items ?? []) {
-        const id = (item as Record<string, unknown>)['@id'] as string;
+        const id = item['@id'];
         if (id && !seen.has(id)) {
           seen.add(id);
           allItems.push(item);

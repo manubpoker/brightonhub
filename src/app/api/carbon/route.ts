@@ -2,19 +2,17 @@ import { NextResponse } from 'next/server';
 import { CARBON_API_URL, BRIGHTON_POSTCODE } from '@/lib/constants';
 import { transformCarbonResponse } from '@/lib/transformers/carbon';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
   try {
     // Fetch current + 24h forecast
     const [currentRes, forecastRes] = await Promise.all([
       fetch(
         `${CARBON_API_URL}/regional/postcode/${BRIGHTON_POSTCODE}`,
-        { next: { revalidate: 300 } }
+        { next: { revalidate: 300 }, signal: AbortSignal.timeout(10000) }
       ),
       fetch(
         `${CARBON_API_URL}/regional/intensity/${new Date().toISOString().slice(0, 16)}Z/fw24h/postcode/${BRIGHTON_POSTCODE}`,
-        { next: { revalidate: 300 } }
+        { next: { revalidate: 300 }, signal: AbortSignal.timeout(10000) }
       ),
     ]);
 

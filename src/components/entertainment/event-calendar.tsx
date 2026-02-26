@@ -18,7 +18,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   DATE: 'bg-pink-100 text-pink-700',
   BARPUB: 'bg-yellow-100 text-yellow-700',
   SPORT: 'bg-red-100 text-red-700',
-  OTHER: 'bg-gray-100 text-gray-700',
+  OTHER: 'bg-muted text-foreground',
 };
 
 const FILTER_CATEGORIES: { code: EventCategory | 'ALL'; label: string }[] = [
@@ -102,8 +102,8 @@ export function EventCalendar({ events }: EventCalendarProps) {
               className={cn(
                 'rounded-full px-3 py-1 text-xs font-medium transition-colors',
                 filter === code
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-foreground text-background'
+                  : 'bg-muted text-muted-foreground hover:bg-accent'
               )}
             >
               {label} ({count})
@@ -114,7 +114,7 @@ export function EventCalendar({ events }: EventCalendarProps) {
 
       {/* Vertical calendar */}
       {filtered.length === 0 ? (
-        <p className="text-sm text-gray-500 text-center py-8">No events found for this filter</p>
+        <p className="text-sm text-muted-foreground text-center py-8">No events found for this filter</p>
       ) : (
         <div className="space-y-0">
           {dates.map((dateStr) => {
@@ -128,23 +128,23 @@ export function EventCalendar({ events }: EventCalendarProps) {
                 <div className="flex-shrink-0 w-16 sm:w-20 pt-3">
                   <div className={cn(
                     'text-center rounded-lg py-2 px-1',
-                    isToday ? 'bg-rose-600 text-white' : 'bg-gray-50'
+                    isToday ? 'bg-rose-600 text-white' : 'bg-muted/50'
                   )}>
-                    <p className={cn('text-[10px] uppercase font-semibold', isToday ? 'text-rose-100' : 'text-gray-400')}>
+                    <p className={cn('text-[10px] uppercase font-semibold', isToday ? 'text-rose-100' : 'text-muted-foreground/70')}>
                       {formatDayOfWeek(dateStr)}
                     </p>
-                    <p className={cn('text-xl font-bold leading-tight', isToday ? 'text-white' : 'text-gray-900')}>
+                    <p className={cn('text-xl font-bold leading-tight', isToday ? 'text-white' : 'text-foreground')}>
                       {formatDayNum(dateStr)}
                     </p>
-                    <p className={cn('text-[10px] uppercase', isToday ? 'text-rose-100' : 'text-gray-400')}>
+                    <p className={cn('text-[10px] uppercase', isToday ? 'text-rose-100' : 'text-muted-foreground/70')}>
                       {formatMonth(dateStr)}
                     </p>
                   </div>
                 </div>
 
                 {/* Events column */}
-                <div className="flex-1 min-w-0 border-l-2 border-gray-100 pl-4 pb-6 ml-2 space-y-2">
-                  <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide pt-3 pb-1">
+                <div className="flex-1 min-w-0 border-l-2 border-border pl-4 pb-6 ml-2 space-y-2">
+                  <h3 className="text-xs font-semibold text-muted-foreground/70 uppercase tracking-wide pt-3 pb-1">
                     {formatDateHeader(dateStr)} &middot; {dayEvents.length} event{dayEvents.length !== 1 ? 's' : ''}
                   </h3>
                   {dayEvents.map((event) => (
@@ -158,7 +158,7 @@ export function EventCalendar({ events }: EventCalendarProps) {
                       <div className="flex gap-3">
                         {/* Image */}
                         {event.imageUrl && (
-                          <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden bg-gray-100">
+                          <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden bg-muted">
                             <img
                               src={event.imageUrl}
                               alt=""
@@ -171,13 +171,13 @@ export function EventCalendar({ events }: EventCalendarProps) {
                         {/* Content */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-2">
-                            <h4 className="text-sm font-semibold text-gray-900 group-hover:text-rose-700 truncate">
+                            <h4 className="text-sm font-semibold text-foreground group-hover:text-rose-700 truncate">
                               {event.name}
                             </h4>
-                            <ExternalLink className="h-3.5 w-3.5 text-gray-300 group-hover:text-rose-400 flex-shrink-0 mt-0.5" />
+                            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-rose-400 flex-shrink-0 mt-0.5" />
                           </div>
 
-                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-gray-500">
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-muted-foreground">
                             <span className="flex items-center gap-1">
                               <MapPin className="h-3 w-3" />
                               {event.venue}
@@ -201,7 +201,7 @@ export function EventCalendar({ events }: EventCalendarProps) {
                               {event.categoryLabel}
                             </Badge>
                             {event.entryPrice && event.entryPrice !== '0' && (
-                              <span className="text-[10px] font-medium text-gray-500">
+                              <span className="text-[10px] font-medium text-muted-foreground">
                                 From £{event.entryPrice}
                               </span>
                             )}

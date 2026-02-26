@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import { LAND_REGISTRY_API_URL } from '@/lib/constants';
 import { transformHousingResponse } from '@/lib/transformers/housing';
 
-export const dynamic = 'force-dynamic';
-
 const SPARQL_QUERY = `
 PREFIX ukhpi: <http://landregistry.data.gov.uk/def/ukhpi/>
 SELECT ?period ?averagePrice ?annualChange
@@ -27,6 +25,7 @@ export async function GET() {
       },
       body: `query=${encodeURIComponent(SPARQL_QUERY)}`,
       next: { revalidate: 86400 },
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!res.ok) {

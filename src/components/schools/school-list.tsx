@@ -26,10 +26,10 @@ export function SchoolList({ schools }: SchoolListProps) {
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{school.name}</p>
                 {school.address && (
-                  <p className="text-xs text-gray-500">{school.address}</p>
+                  <p className="text-xs text-muted-foreground">{school.address}</p>
                 )}
                 {school.operator && (
-                  <p className="text-xs text-gray-400">{school.operator}</p>
+                  <p className="text-xs text-muted-foreground/70">{school.operator}</p>
                 )}
               </div>
               {school.website && (
@@ -37,7 +37,7 @@ export function SchoolList({ schools }: SchoolListProps) {
                   href={school.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-gray-600 ml-2 flex-shrink-0"
+                  className="text-muted-foreground/70 hover:text-muted-foreground ml-2 flex-shrink-0"
                 >
                   <ExternalLink className="h-4 w-4" />
                 </a>

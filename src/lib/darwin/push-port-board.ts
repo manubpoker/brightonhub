@@ -2,7 +2,7 @@ import { BRIGHTON_TIPLOC } from '@/lib/constants';
 import type { DarwinStationBoardResponse, DarwinServiceResponse } from '@/types/api';
 import { getStationName } from './tiploc-names';
 import { getTocName } from './toc-names';
-import type { PushPortStore, DiscoveredBrightonService } from './push-port-store';
+import type { PushPortStore } from './push-port-store';
 
 // ---------------------------------------------------------------------------
 // Time helpers
@@ -39,7 +39,6 @@ function isInDepartureWindow(ptd: string, nowMinutes: number): boolean {
 function synthesizeFromSchedules(
   store: PushPortStore,
   nowMinutes: number,
-  limit: number,
 ): DarwinServiceResponse[] {
   const departures: DarwinServiceResponse[] = [];
 
@@ -154,7 +153,6 @@ function inferDestination(
 function synthesizeFromDiscoveredServices(
   store: PushPortStore,
   nowMinutes: number,
-  limit: number,
 ): DarwinServiceResponse[] {
   const departures: DarwinServiceResponse[] = [];
 
@@ -227,11 +225,11 @@ export function synthesizeDepartureBoard(
   const nowMinutes = now.getHours() * 60 + now.getMinutes();
 
   // Try schedule-based board first (most accurate)
-  let departures = synthesizeFromSchedules(store, nowMinutes, limit);
+  let departures = synthesizeFromSchedules(store, nowMinutes);
 
   // If no schedules available, use discovered services from status updates
   if (departures.length === 0) {
-    departures = synthesizeFromDiscoveredServices(store, nowMinutes, limit);
+    departures = synthesizeFromDiscoveredServices(store, nowMinutes);
   }
 
   // Sort by scheduled departure time

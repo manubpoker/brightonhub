@@ -17,15 +17,15 @@ export function ForecastCard({ day, isToday }: ForecastCardProps) {
   return (
     <div className="flex flex-col items-center rounded-lg border p-3 min-w-[100px]">
       <p className="text-sm font-semibold">{dayLabel}</p>
-      <p className="text-xs text-gray-400">{dateLabel}</p>
-      <p className="text-xs text-gray-500 mt-2 text-center leading-tight">
+      <p className="text-xs text-muted-foreground/70">{dateLabel}</p>
+      <p className="text-xs text-muted-foreground mt-2 text-center leading-tight">
         {day.weatherDescription}
       </p>
       <div className="flex items-baseline gap-1 mt-2">
         <span className="text-lg font-bold">{day.tempMax.toFixed(0)}°</span>
-        <span className="text-sm text-gray-400">{day.tempMin.toFixed(0)}°</span>
+        <span className="text-sm text-muted-foreground/70">{day.tempMin.toFixed(0)}°</span>
       </div>
-      <div className="flex flex-col gap-1 mt-2 text-xs text-gray-500">
+      <div className="flex flex-col gap-1 mt-2 text-xs text-muted-foreground">
         <div className="flex items-center gap-1">
           <Droplets className="h-3 w-3" />
           {day.precipProbability}%

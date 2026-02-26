@@ -1,4 +1,4 @@
-export type HazardSource = 'flood' | 'air-quality' | 'carbon' | 'crime' | 'transport' | 'planning' | 'health' | 'housing' | 'schools' | 'community' | 'entertainment';
+export type HazardSource = 'flood' | 'air-quality' | 'carbon' | 'crime' | 'transport' | 'planning' | 'weather' | 'health' | 'housing' | 'schools' | 'community' | 'entertainment';
 export type Severity = 'severe' | 'warning' | 'alert' | 'normal';
 
 export interface HazardAlert {

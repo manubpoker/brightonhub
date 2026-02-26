@@ -1,3 +1,4 @@
+import type { UKAirTimeseriesResponse } from '@/types/api';
 import type { AirQualityReading, HazardAlert, PollutantReading, Severity } from '@/types/domain';
 import { DAQI_BANDS, BRIGHTON_LAT, BRIGHTON_LNG } from '@/lib/constants';
 
@@ -6,7 +7,7 @@ export interface AirQualityData {
   alert: HazardAlert;
 }
 
-// Simplified DAQI calculation based on pollutant concentrations (µg/m³)
+// Simplified DAQI calculation based on pollutant concentrations (ug/m3)
 function calculatePollutantIndex(name: string, value: number): { index: number; band: string } {
   const lower = name.toLowerCase();
   let breakpoints: number[];
@@ -37,10 +38,15 @@ function calculatePollutantIndex(name: string, value: number): { index: number; 
   return { index, band: daqiBand?.band ?? 'Low' };
 }
 
-// New primary entry point — works with timeseries items directly
+interface TimeseriesWithDistance extends UKAirTimeseriesResponse {
+  _lat?: number;
+  _lng?: number;
+  _dist?: number;
+}
+
+// Primary entry point - works with timeseries items directly
 export function transformAirQualityFromTimeseries(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  timeseries: any[]
+  timeseries: TimeseriesWithDistance[]
 ): AirQualityData {
   if (!timeseries || timeseries.length === 0) {
     return {
@@ -69,20 +75,16 @@ export function transformAirQualityFromTimeseries(
   const lng = first._lng ?? coords[1] ?? BRIGHTON_LNG;
 
   const pollutants: PollutantReading[] = timeseries
-    .filter(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (ts: any) => ts.lastValue?.value != null
-    )
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .map((ts: any) => {
+    .filter((ts) => ts.lastValue?.value != null)
+    .map((ts) => {
       // Extract pollutant name from station label: "Brighton Preston Park-Nitrogen dioxide (air)"
-      const rawLabel = ts.station?.properties?.label ?? '';
-      const afterDash = rawLabel.split('-').slice(1).join('-').trim();
+      const label = ts.station?.properties?.label ?? '';
+      const afterDash = label.split('-').slice(1).join('-').trim();
       // Clean up: "Nitrogen dioxide (air)" -> "Nitrogen dioxide"
       const cleanedName = afterDash.replace(/\s*\(.*?\)\s*$/, '');
       const name = cleanedName || (ts.parameters?.phenomenon?.label ?? 'Unknown');
       const value = ts.lastValue?.value ?? 0;
-      const unit = ts.uom?.replace('ug.m-3', 'µg/m³') ?? 'µg/m³';
+      const unit = ts.uom?.replace('ug.m-3', 'ug/m3') ?? 'ug/m3';
       const { index, band } = calculatePollutantIndex(name, value);
 
       return { name, value, unit, index, band };
@@ -117,14 +119,4 @@ export function transformAirQualityFromTimeseries(
   };
 
   return { reading, alert };
-}
-
-// Legacy entry point kept for compatibility
-export function transformAirQuality(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  station: any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  timeseries: any[]
-): AirQualityData {
-  return transformAirQualityFromTimeseries(timeseries);
 }

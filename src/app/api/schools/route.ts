@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import { OVERPASS_API_URL, BRIGHTON_BBOX } from '@/lib/constants';
 import { transformSchoolsResponse } from '@/lib/transformers/schools';
 
-export const dynamic = 'force-dynamic';
-
 // Brighton & Hove wider urban bounding box (includes Shoreham/Portslade)
 const OVERPASS_QUERY = `[out:json];node[amenity=school](${BRIGHTON_BBOX.south},${BRIGHTON_BBOX.west},${BRIGHTON_BBOX.north},${BRIGHTON_BBOX.east});out body qt;`;
 
@@ -16,6 +14,7 @@ export async function GET() {
       },
       body: `data=${encodeURIComponent(OVERPASS_QUERY)}`,
       next: { revalidate: 86400 },
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!res.ok) {

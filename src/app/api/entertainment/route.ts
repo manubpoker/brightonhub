@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import { SKIDDLE_API_URL, SKIDDLE_API_KEY, BRIGHTON_LAT, BRIGHTON_LNG } from '@/lib/constants';
 import { transformEntertainmentResponse } from '@/lib/transformers/entertainment';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
   if (!SKIDDLE_API_KEY) {
     return NextResponse.json(
@@ -31,6 +29,7 @@ export async function GET() {
 
     const res = await fetch(`${SKIDDLE_API_URL}?${params}`, {
       next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!res.ok) {

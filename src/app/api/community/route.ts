@@ -2,13 +2,12 @@ import { NextResponse } from 'next/server';
 import { GIVEFOOD_API_URL, BRIGHTON_LAT, BRIGHTON_LNG } from '@/lib/constants';
 import { transformCommunityResponse } from '@/lib/transformers/community';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
   try {
     const url = `${GIVEFOOD_API_URL}?lat_lng=${BRIGHTON_LAT},${BRIGHTON_LNG}`;
     const res = await fetch(url, {
       next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!res.ok) {

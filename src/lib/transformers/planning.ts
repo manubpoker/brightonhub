@@ -1,6 +1,5 @@
 import type { PlanningDataResponse } from '@/types/api';
-import type { PlanningApplication, PlanningOverview, HazardAlert } from '@/types/domain';
-import { BRIGHTON_LAT, BRIGHTON_LNG } from '@/lib/constants';
+import type { PlanningApplication, PlanningOverview } from '@/types/domain';
 
 export type PlanningData = PlanningOverview;
 
@@ -35,14 +34,3 @@ export function transformPlanningResponse(raw: PlanningDataResponse): PlanningDa
   };
 }
 
-export function createPlanningAlert(data: PlanningData): HazardAlert {
-  return {
-    id: 'planning-overview',
-    source: 'planning',
-    severity: 'normal',
-    title: `${data.totalApplications} planning applications`,
-    description: `Recent development activity in Brighton & Hove`,
-    location: { lat: BRIGHTON_LAT, lng: BRIGHTON_LNG },
-    timestamp: new Date().toISOString(),
-  };
-}

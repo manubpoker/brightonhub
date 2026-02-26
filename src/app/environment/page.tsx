@@ -12,7 +12,7 @@ import { severityOrder, formatTimeAgo } from '@/lib/utils';
 import { BRIGHTON_LAT, BRIGHTON_LNG, BRIGHTON_BEACHES } from '@/lib/constants';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Waves } from 'lucide-react';
+import { Waves, ExternalLink } from 'lucide-react';
 
 export default function EnvironmentDashboard() {
   const carbon = useCarbon();
@@ -148,7 +148,7 @@ export default function EnvironmentDashboard() {
                     <Badge variant={badgeVariant} className="mt-2">
                       {beach.classification}
                     </Badge>
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-muted-foreground mt-2">
                       {beach.lastSampleDate
                         ? `Sampled: ${beach.lastSampleDate}`
                         : `Year: ${beach.sampleYear}`}
@@ -157,16 +157,49 @@ export default function EnvironmentDashboard() {
                 );
               })}
             </div>
-            <p className="text-xs text-gray-400 mt-3">
+            <p className="text-xs text-muted-foreground/70 mt-3">
               Classification based on Environment Agency bathing water samples.
             </p>
           </CardContent>
         </Card>
       )}
 
+      {/* Useful Links */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <ExternalLink className="h-4 w-4 text-green-600" />
+            Useful Links
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {[
+              { label: 'Environment Agency', url: 'https://www.gov.uk/government/organisations/environment-agency' },
+              { label: 'DEFRA UK-AIR', url: 'https://uk-air.defra.gov.uk/' },
+              { label: 'Carbon Intensity API', url: 'https://carbonintensity.org.uk/' },
+              { label: 'Brighton & Hove Council Environment', url: 'https://www.brighton-hove.gov.uk/environment' },
+              { label: 'Sussex Wildlife Trust', url: 'https://sussexwildlifetrust.org.uk/' },
+              { label: 'EA Bathing Water Quality', url: 'https://environment.data.gov.uk/bwq/profiles/' },
+            ].map(({ label, url }) => (
+              <a
+                key={label}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-lg border p-3 text-sm text-blue-600 hover:bg-accent transition-colors"
+              >
+                <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                {label}
+              </a>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Data freshness */}
       {lastUpdated && (
-        <p className="text-xs text-gray-400 text-center">
+        <p className="text-xs text-muted-foreground/70 text-center">
           Last updated: {lastUpdated}
         </p>
       )}

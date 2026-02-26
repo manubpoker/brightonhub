@@ -23,8 +23,9 @@ export default function MapInner({ markers, legendItems }: MapInnerProps) {
     <MapContainer
       center={[BRIGHTON_LAT, BRIGHTON_LNG]}
       zoom={MAP_DEFAULT_ZOOM}
-      className="h-full w-full min-h-[400px] rounded-lg z-0"
+      className="h-full w-full min-h-[300px] sm:min-h-[400px] lg:min-h-[500px] rounded-lg z-0"
       scrollWheelZoom={true}
+      aria-label="Interactive map of Brighton & Hove"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -43,7 +44,7 @@ export default function MapInner({ markers, legendItems }: MapInnerProps) {
           <Popup>
             <div className="text-sm">
               <p className="font-semibold">{marker.label}</p>
-              <p className="text-gray-600">{marker.popup}</p>
+              <p className="text-muted-foreground">{marker.popup}</p>
               {marker.value && (
                 <p className="font-medium mt-1">{marker.value}</p>
               )}

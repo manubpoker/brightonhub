@@ -3,14 +3,13 @@ import { BATHING_WATER_API_URL, BRIGHTON_BEACHES } from '@/lib/constants';
 import { transformBathingWaterResponse, createBathingWaterOverview } from '@/lib/transformers/bathing-water';
 import type { BathingWaterProfileResponse } from '@/types/api';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
   try {
     const results = await Promise.allSettled(
       BRIGHTON_BEACHES.map(async (beach) => {
         const res = await fetch(`${BATHING_WATER_API_URL}/${beach.id}.json`, {
           next: { revalidate: 21600 }, // 6 hours
+          signal: AbortSignal.timeout(10000),
         });
 
         if (!res.ok) {

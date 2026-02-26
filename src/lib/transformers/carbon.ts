@@ -1,3 +1,4 @@
+import type { CarbonIntensityResponse } from '@/types/api';
 import type { CarbonIntensity, HazardAlert } from '@/types/domain';
 import { CARBON_INDEX_TO_SEVERITY, BRIGHTON_LAT, BRIGHTON_LNG } from '@/lib/constants';
 import type { Severity } from '@/types/domain';
@@ -9,12 +10,10 @@ export interface CarbonData {
 }
 
 export function transformCarbonResponse(
-  currentRaw: unknown,
-  forecastRaw: unknown
+  currentRaw: CarbonIntensityResponse,
+  forecastRaw: CarbonIntensityResponse | null
 ): CarbonData {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const current = currentRaw as any;
-  const entry = current?.data?.data?.[0] ?? current?.data?.[0]?.data?.[0];
+  const entry = currentRaw?.data?.data?.[0];
 
   if (!entry) {
     throw new Error('Unexpected carbon API response format');
@@ -22,7 +21,7 @@ export function transformCarbonResponse(
 
   const currentIntensity: CarbonIntensity = {
     forecast: entry.intensity.forecast,
-    actual: entry.intensity.actual ?? null,
+    actual: null,
     index: entry.intensity.index,
     from: entry.from,
     to: entry.to,
@@ -50,14 +49,11 @@ export function transformCarbonResponse(
   // Transform forecast data
   let forecastEntries: CarbonIntensity[] = [];
   if (forecastRaw) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const fRaw = forecastRaw as any;
-    const items = fRaw?.data?.data ?? fRaw?.data?.[0]?.data ?? [];
+    const items = forecastRaw?.data?.data ?? [];
     forecastEntries = items.map(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (item: any) => ({
+      (item) => ({
         forecast: item.intensity.forecast,
-        actual: item.intensity.actual ?? null,
+        actual: null,
         index: item.intensity.index,
         from: item.from,
         to: item.to,

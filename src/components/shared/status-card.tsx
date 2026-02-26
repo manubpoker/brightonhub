@@ -66,7 +66,7 @@ export function StatusCard({
       <CardContent className="p-4">
         <div className="flex items-center gap-2 mb-2">
           <Icon className={cn('h-4 w-4', getSeverityTextClass(severity))} />
-          <span className="text-sm font-medium text-gray-600">{title}</span>
+          <span className="text-sm font-medium text-muted-foreground">{title}</span>
         </div>
         <p
           className={cn(
@@ -76,7 +76,7 @@ export function StatusCard({
         >
           {value}
         </p>
-        <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>
       </CardContent>
     </Card>
   );

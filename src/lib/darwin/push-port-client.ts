@@ -107,6 +107,11 @@ async function startConsumer(store: PushPortStore): Promise<void> {
     console.error('[PushPort] Consumer crash:', event.payload.error);
     g.__pushPortConnected = false;
     g.__pushPortConnecting = false;
+    // Auto-reconnect after crash with backoff
+    setTimeout(() => {
+      console.log('[PushPort] Attempting reconnect after crash...');
+      ensurePushPortConnection();
+    }, 30_000);
   });
 
   await consumer.connect();

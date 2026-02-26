@@ -7,18 +7,10 @@ import { ErrorState } from '@/components/shared/error-state';
 import { CrimeMap } from '@/components/crime/crime-map';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Shield, TrendingUp, MapPin, BarChart3 } from 'lucide-react';
+import { Shield, TrendingUp, MapPin, BarChart3, Info, BookOpen, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { CRIME_AREA_COLORS } from '@/lib/constants';
 import Link from 'next/link';
-
-const AREA_COLORS: Record<string, string> = {
-  BN1: 'bg-red-100 text-red-700',
-  BN2: 'bg-orange-100 text-orange-700',
-  BN3: 'bg-purple-100 text-purple-700',
-  BN41: 'bg-cyan-100 text-cyan-700',
-  BN42: 'bg-fuchsia-100 text-fuchsia-700',
-  BN43: 'bg-lime-100 text-lime-700',
-};
 
 export default function CrimePage() {
   const { data, isLoading, isError } = useCrime();
@@ -44,7 +36,7 @@ export default function CrimePage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Crime & Safety</h1>
-        <p className="text-gray-500 mt-1">
+        <p className="text-muted-foreground mt-1">
           Monthly crime data across Brighton & Hove urban area from Police.uk open data
         </p>
       </div>
@@ -90,8 +82,8 @@ export default function CrimePage() {
                 className={cn(
                   'rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
                   selectedArea === null
-                    ? 'bg-gray-900 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground hover:bg-accent'
                 )}
               >
                 All Areas ({summary.totalCrimes})
@@ -103,8 +95,8 @@ export default function CrimePage() {
                   className={cn(
                     'rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
                     selectedArea === area.area
-                      ? 'bg-gray-900 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-muted-foreground hover:bg-accent'
                   )}
                 >
                   {area.area} ({area.count})
@@ -117,20 +109,20 @@ export default function CrimePage() {
                   key={area.area}
                   className={cn(
                     'rounded-lg border p-4 cursor-pointer transition-shadow hover:shadow-sm',
-                    selectedArea === area.area && 'ring-2 ring-gray-900'
+                    selectedArea === area.area && 'ring-2 ring-primary'
                   )}
                   onClick={() => setSelectedArea(selectedArea === area.area ? null : area.area)}
                 >
                   <div className="flex items-center justify-between">
-                    <Badge className={AREA_COLORS[area.area] ?? 'bg-gray-100 text-gray-700'}>
+                    <Badge className={CRIME_AREA_COLORS[area.area] ?? 'bg-muted text-foreground'}>
                       {area.area}
                     </Badge>
                     <span className="text-lg font-bold">{area.count}</span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">{area.label}</p>
-                  <div className="mt-2 h-1.5 bg-gray-100 rounded-full">
+                  <p className="text-xs text-muted-foreground mt-1">{area.label}</p>
+                  <div className="mt-2 h-1.5 bg-muted rounded-full">
                     <div
-                      className="h-1.5 bg-gray-600 rounded-full"
+                      className="h-1.5 bg-primary rounded-full"
                       style={{
                         width: `${Math.min(100, (area.count / Math.max(...summary.areaBreakdown.map((a) => a.count))) * 100)}%`,
                       }}
@@ -159,7 +151,7 @@ export default function CrimePage() {
               <BarChart3 className="h-5 w-5 text-blue-600" />
               <div>
                 <p className="font-medium text-sm">Category Breakdown</p>
-                <p className="text-xs text-gray-500">Charts and tables by crime type</p>
+                <p className="text-xs text-muted-foreground">Charts and tables by crime type</p>
               </div>
             </CardContent>
           </Card>
@@ -170,21 +162,107 @@ export default function CrimePage() {
               <Shield className="h-5 w-5 text-blue-600" />
               <div>
                 <p className="font-medium text-sm">Neighbourhood Policing</p>
-                <p className="text-xs text-gray-500">Local team and contact info</p>
+                <p className="text-xs text-muted-foreground">Local team and contact info</p>
               </div>
             </CardContent>
           </Card>
         </Link>
       </div>
 
+      {/* Understanding Crime Data */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Info className="h-4 w-4 text-blue-500" />
+            Understanding Crime Data in Brighton
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="text-sm text-muted-foreground space-y-2">
+          <p>
+            Crime data covers the Brighton &amp; Hove urban area across six postcode districts.{' '}
+            <strong>BN1</strong> (Central Brighton, including the city centre and nightlife areas)
+            consistently reports the highest volumes due to population density and foot traffic.
+          </p>
+          <p>
+            Data is typically <strong>2 months behind</strong> the current date due to processing time.
+            Seasonal patterns are common — summer months and the festival season tend to see increased
+            reports, particularly for ASB and violent crime.
+          </p>
+          <p>
+            Location coordinates are <strong>anonymised</strong> by Police.uk to the nearest street or
+            landmark (snap points), so pins on the map represent approximate areas rather than exact
+            addresses. Some incidents are mapped to the same point if they occurred on the same street.
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Key Terms */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <BookOpen className="h-4 w-4 text-purple-500" />
+            Key Terms
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[
+              { term: 'Police.uk', definition: 'The open data platform providing street-level crime data for England, Wales, and Northern Ireland' },
+              { term: 'OGL', definition: 'Open Government Licence — allows free reuse of government data with attribution' },
+              { term: 'ASB', definition: 'Anti-social behaviour — includes nuisance, environmental, and personal categories' },
+              { term: 'Violent Crime', definition: 'Offences including assault, harassment, and public order — the broadest Home Office category' },
+              { term: 'Outcome', definition: 'How a reported crime was resolved — e.g. investigation complete, unable to prosecute, charged' },
+              { term: 'BN Areas', definition: 'BN1 (Central), BN2 (East/Kemptown), BN3 (Hove), BN41 (Southwick), BN42–43 (Shoreham)' },
+            ].map(({ term, definition }) => (
+              <div key={term} className="rounded-lg border p-3">
+                <Badge variant="secondary" className="text-xs mb-1">{term}</Badge>
+                <p className="text-xs text-muted-foreground">{definition}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Useful Links */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <ExternalLink className="h-4 w-4 text-green-600" />
+            Useful Links
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {[
+              { label: 'Police.uk — Brighton', url: 'https://www.police.uk/pu/your-area/sussex-police/' },
+              { label: 'Sussex Police', url: 'https://www.sussex.police.uk/' },
+              { label: 'Report a Crime', url: 'https://www.sussex.police.uk/ro/report/ocr/af/how-to-report-a-crime/' },
+              { label: 'Crimestoppers', url: 'https://crimestoppers-uk.org/' },
+              { label: 'Victim Support', url: 'https://www.victimsupport.org.uk/' },
+            ].map(({ label, url }) => (
+              <a
+                key={label}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-lg border p-3 text-sm text-blue-600 hover:bg-accent transition-colors"
+              >
+                <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                {label}
+              </a>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Info */}
       <Card>
         <CardContent className="py-4">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             Crime data is provided by{' '}
             <a
               href="https://data.police.uk/"
-              className="underline hover:text-gray-700"
+              className="underline hover:text-foreground"
               target="_blank"
               rel="noopener noreferrer"
             >

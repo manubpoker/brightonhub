@@ -49,7 +49,7 @@ export function DepartureBoard({ departures, stationName, loading }: DepartureBo
       </CardHeader>
       <CardContent>
         {departures.length === 0 ? (
-          <p className="text-gray-500 py-8 text-center">
+          <p className="text-muted-foreground py-8 text-center">
             No departure information available.
           </p>
         ) : (
@@ -71,7 +71,7 @@ export function DepartureBoard({ departures, stationName, loading }: DepartureBo
                       {service.scheduledTime}
                     </td>
                     <td className="py-2.5 pr-4">
-                      {service.destination || <span className="text-gray-400 italic">Building...</span>}
+                      {service.destination || <span className="text-muted-foreground/70 italic">Building...</span>}
                     </td>
                     <td className="py-2.5 pr-4 text-center">
                       {service.platform ?? '\u2014'}

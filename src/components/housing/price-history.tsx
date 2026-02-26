@@ -26,9 +26,9 @@ export function PriceHistory({ history }: PriceHistoryProps) {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b">
-                <th className="text-left py-2 font-medium text-gray-500">Period</th>
-                <th className="text-right py-2 font-medium text-gray-500">Avg Price</th>
-                <th className="text-right py-2 font-medium text-gray-500">Annual Change</th>
+                <th className="text-left py-2 font-medium text-muted-foreground">Period</th>
+                <th className="text-right py-2 font-medium text-muted-foreground">Avg Price</th>
+                <th className="text-right py-2 font-medium text-muted-foreground">Annual Change</th>
               </tr>
             </thead>
             <tbody>
@@ -51,7 +51,7 @@ export function PriceHistory({ history }: PriceHistoryProps) {
                           ? 'text-green-600'
                           : change < 0
                           ? 'text-red-600'
-                          : 'text-gray-500'
+                          : 'text-muted-foreground'
                       }`}
                     >
                       {change >= 0 ? '+' : ''}{change.toFixed(1)}%

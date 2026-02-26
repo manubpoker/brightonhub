@@ -2,12 +2,10 @@ import { NextResponse } from 'next/server';
 import { POLICE_API_URL, CRIME_AREAS } from '@/lib/constants';
 import { transformMultiAreaCrimeResponse } from '@/lib/transformers/crime';
 
-export const dynamic = 'force-dynamic';
-
 async function fetchCrimesForDate(lat: number, lng: number, date: string) {
   const res = await fetch(
     `${POLICE_API_URL}/crimes-street/all-crime?lat=${lat}&lng=${lng}&date=${date}`,
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 3600 }, signal: AbortSignal.timeout(10000) }
   );
   return res;
 }
@@ -27,16 +25,20 @@ export async function GET() {
       })
     );
 
-    // If any return 422 (date not available), fall back one month earlier
-    if (results.some((r) => r.res.status === 422)) {
+    // If any return 422 (date not available), retry only the failed areas
+    const failedAreas = results.filter((r) => r.res.status === 422);
+    if (failedAreas.length > 0) {
       now.setMonth(now.getMonth() - 1);
       date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-      results = await Promise.all(
-        CRIME_AREAS.map(async (area) => {
+      const retried = await Promise.all(
+        failedAreas.map(async ({ area }) => {
           const res = await fetchCrimesForDate(area.lat, area.lng, date);
           return { area, res };
         })
       );
+      // Replace failed results with retried ones
+      const retriedMap = new Map(retried.map((r) => [r.area.id, r]));
+      results = results.map((r) => retriedMap.get(r.area.id) ?? r);
     }
 
     // Parse all successful responses

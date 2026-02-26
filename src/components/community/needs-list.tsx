@@ -8,7 +8,7 @@ interface NeedsListProps {
 
 export function NeedsList({ needs }: NeedsListProps) {
   if (needs.length === 0) {
-    return <p className="text-xs text-gray-400">No current needs listed</p>;
+    return <p className="text-xs text-muted-foreground/70">No current needs listed</p>;
   }
 
   return (

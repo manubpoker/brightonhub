@@ -61,6 +61,7 @@ export interface DiscoveredBrightonService {
 
 const CLEANUP_INTERVAL_MS = 5 * 60 * 1000;    // 5 minutes
 const MAX_AGE_MS = 4 * 60 * 60 * 1000;        // 4 hours
+const MAX_STORE_SIZE = 5000;                    // max entries per map
 
 export class PushPortStore {
   readonly schedules = new Map<string, StoredSchedule>();
@@ -89,6 +90,11 @@ export class PushPortStore {
       (cp) => cp.tpl === BRIGHTON_TIPLOC
     );
     if (!touchesBrighton) return;
+
+    // Evict oldest entries if at capacity
+    if (this.schedules.size >= MAX_STORE_SIZE && !this.schedules.has(schedule.rid)) {
+      this.evictOldest(this.schedules);
+    }
 
     this.schedules.set(schedule.rid, {
       ...schedule,
@@ -194,6 +200,28 @@ export class PushPortStore {
       clearInterval(this.cleanupTimer);
       this.cleanupTimer = null;
     }
+  }
+
+  private evictOldest(map: Map<string, { receivedAt: number }>): void {
+    let oldestKey: string | null = null;
+    let oldestTime = Infinity;
+    for (const [key, val] of map) {
+      if (val.receivedAt < oldestTime) {
+        oldestTime = val.receivedAt;
+        oldestKey = key;
+      }
+    }
+    if (oldestKey) map.delete(oldestKey);
+  }
+
+  isAlive(): boolean {
+    if (!this._ready) return false;
+    // Consider store alive if it received data within the last 10 minutes
+    const cutoff = Date.now() - 10 * 60 * 1000;
+    for (const svc of this.brightonServices.values()) {
+      if (svc.receivedAt > cutoff) return true;
+    }
+    return false;
   }
 
   private cleanup(): void {

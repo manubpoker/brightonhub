@@ -30,7 +30,7 @@ export function FoodBankList({ foodBanks }: FoodBankListProps) {
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold">{fb.name}</p>
-                  <p className="text-xs text-gray-500">{fb.address}</p>
+                  <p className="text-xs text-muted-foreground">{fb.address}</p>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   {fb.distance_m > 0 && (
@@ -46,15 +46,15 @@ export function FoodBankList({ foodBanks }: FoodBankListProps) {
                 </div>
               </div>
               {fb.hasNeeds && <NeedsList needs={fb.needs} />}
-              <div className="flex flex-wrap gap-3 text-xs text-gray-500">
+              <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
                 {fb.phone && (
-                  <a href={`tel:${fb.phone}`} className="flex items-center gap-1 hover:text-gray-700">
+                  <a href={`tel:${fb.phone}`} className="flex items-center gap-1 hover:text-foreground">
                     <Phone className="h-3 w-3" />
                     {fb.phone}
                   </a>
                 )}
                 {fb.email && (
-                  <a href={`mailto:${fb.email}`} className="flex items-center gap-1 hover:text-gray-700">
+                  <a href={`mailto:${fb.email}`} className="flex items-center gap-1 hover:text-foreground">
                     <Mail className="h-3 w-3" />
                     {fb.email}
                   </a>
@@ -64,7 +64,7 @@ export function FoodBankList({ foodBanks }: FoodBankListProps) {
                     href={fb.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:text-gray-700"
+                    className="flex items-center gap-1 hover:text-foreground"
                   >
                     <ExternalLink className="h-3 w-3" />
                     Website
