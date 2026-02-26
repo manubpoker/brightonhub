@@ -3,7 +3,7 @@ import { OVERPASS_API_URL, BRIGHTON_BBOX } from '@/lib/constants';
 import { transformSchoolsResponse } from '@/lib/transformers/schools';
 
 // Brighton & Hove wider urban bounding box (includes Shoreham/Portslade)
-const OVERPASS_QUERY = `[out:json];node[amenity=school](${BRIGHTON_BBOX.south},${BRIGHTON_BBOX.west},${BRIGHTON_BBOX.north},${BRIGHTON_BBOX.east});out body qt;`;
+const OVERPASS_QUERY = `[out:json];(node[amenity=school](${BRIGHTON_BBOX.south},${BRIGHTON_BBOX.west},${BRIGHTON_BBOX.north},${BRIGHTON_BBOX.east});way[amenity=school](${BRIGHTON_BBOX.south},${BRIGHTON_BBOX.west},${BRIGHTON_BBOX.north},${BRIGHTON_BBOX.east});relation[amenity=school](${BRIGHTON_BBOX.south},${BRIGHTON_BBOX.west},${BRIGHTON_BBOX.north},${BRIGHTON_BBOX.east}););out body center qt;`;
 
 export async function GET() {
   try {

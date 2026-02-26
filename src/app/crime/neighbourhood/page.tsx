@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Users, Mail, Phone, Info, ExternalLink } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { sanitizeHtml } from '@/lib/sanitize';
+import { sanitizeApiHtml } from '@/lib/sanitize';
 import { Breadcrumbs } from '@/components/shared/breadcrumbs';
 
 export default function NeighbourhoodPage() {
@@ -55,7 +55,7 @@ export default function NeighbourhoodPage() {
               {info?.description && (
                 <div
                   className="text-sm text-muted-foreground prose prose-sm max-w-none"
-                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(info.description) }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeApiHtml(info.description) }}
                 />
               )}
               <div className="flex flex-wrap gap-4 text-sm">

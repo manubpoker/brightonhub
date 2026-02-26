@@ -1,5 +1,6 @@
 import type { SkiddleEvent } from '@/types/api';
 import type { EntertainmentEvent, EntertainmentOverview, EventCategory } from '@/types/domain';
+import { getUKDateString, getUKDateStringOffset } from '@/lib/date-utils';
 
 export type EntertainmentData = EntertainmentOverview;
 
@@ -24,8 +25,8 @@ function toCategory(code: string): EventCategory {
 }
 
 export function transformEntertainmentResponse(raw: SkiddleEvent[]): EntertainmentData {
-  const today = new Date().toISOString().split('T')[0];
-  const weekEnd = new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0];
+  const today = getUKDateString();
+  const weekEnd = getUKDateStringOffset(7);
 
   const events: EntertainmentEvent[] = (raw ?? []).map((e) => {
     const cat = toCategory(e.EventCode ?? '');

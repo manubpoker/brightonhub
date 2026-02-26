@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { SKIDDLE_API_URL, SKIDDLE_API_KEY, BRIGHTON_LAT, BRIGHTON_LNG } from '@/lib/constants';
 import { transformEntertainmentResponse } from '@/lib/transformers/entertainment';
+import { getUKDateString, getUKDateStringOffset } from '@/lib/date-utils';
 
 export async function GET() {
   if (!SKIDDLE_API_KEY) {
@@ -11,9 +12,9 @@ export async function GET() {
   }
 
   try {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getUKDateString();
     // Fetch events for the next 14 days
-    const maxDate = new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0];
+    const maxDate = getUKDateStringOffset(14);
 
     const params = new URLSearchParams({
       api_key: SKIDDLE_API_KEY,
@@ -29,7 +30,7 @@ export async function GET() {
 
     const res = await fetch(`${SKIDDLE_API_URL}?${params}`, {
       next: { revalidate: 3600 },
-      signal: AbortSignal.timeout(10000),
+      signal: AbortSignal.timeout(15000),
     });
 
     if (!res.ok) {

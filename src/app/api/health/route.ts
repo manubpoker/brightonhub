@@ -3,7 +3,7 @@ import { NHS_ODS_API_URL, BRIGHTON_POSTCODES, POSTCODES_IO_API_URL } from '@/lib
 import { transformHealthResponse } from '@/lib/transformers/health';
 import type { NhsOdsOrganisation } from '@/types/api';
 
-const ROLE_IDS = ['RO177', 'RO197', 'RO108', 'RO110']; // GPs, pharmacies, hospitals, dentists
+const ROLE_IDS = ['RO177', 'RO197', 'RO110']; // GPs, pharmacies, dentists (hospitals use static data)
 
 async function fetchOrgs(postcode: string, roleId: string): Promise<NhsOdsOrganisation[]> {
   const url = `${NHS_ODS_API_URL}?PostCode=${postcode}&Status=Active&PrimaryRoleId=${roleId}`;

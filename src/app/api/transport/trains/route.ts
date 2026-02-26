@@ -103,7 +103,7 @@ export async function GET() {
   if (isPushPortConfigured()) {
     try {
       const board = getPushPortBoard();
-      if (board) {
+      if (board && board.trainServices.length > 0) {
         return NextResponse.json(transformTrainResponse(board));
       }
     } catch (error) {
@@ -118,7 +118,7 @@ export async function GET() {
       transformTrainResponse({
         locationName: 'Brighton',
         trainServices: [],
-        nrccMessages: ['Train data requires a DARWIN_API_KEY or Push Port credentials.'],
+        nrccMessages: ['Live train data is temporarily unavailable. Check <a href="https://www.nationalrail.co.uk/live-trains/departures/BTN/">National Rail</a> for Brighton departures.'],
       })
     );
   }

@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Train, AlertTriangle, Bus, Info, BookOpen, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
-import { sanitizeHtml } from '@/lib/sanitize';
+import { sanitizeApiHtml } from '@/lib/sanitize';
 
 export default function TransportPage() {
   const { data, isLoading, isError } = useTrains();
@@ -116,7 +116,7 @@ export default function TransportPage() {
               <div
                 key={i}
                 className="text-sm text-muted-foreground rounded-lg bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800/30 p-3"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(msg) }}
+                dangerouslySetInnerHTML={{ __html: sanitizeApiHtml(msg) }}
               />
             ))}
           </CardContent>

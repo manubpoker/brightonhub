@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Clock, MapPin, Music, ExternalLink } from 'lucide-react';
 import type { EntertainmentEvent, EventCategory } from '@/types/domain';
+import { getLocalDateString } from '@/lib/date-utils';
 
 const CATEGORY_COLORS: Record<string, string> = {
   LIVE: 'bg-rose-100 text-rose-700',
@@ -40,8 +41,8 @@ function formatDateHeader(dateStr: string): string {
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  if (dateStr === today.toISOString().split('T')[0]) return 'Today';
-  if (dateStr === tomorrow.toISOString().split('T')[0]) return 'Tomorrow';
+  if (dateStr === getLocalDateString(today)) return 'Today';
+  if (dateStr === getLocalDateString(tomorrow)) return 'Tomorrow';
 
   return date.toLocaleDateString('en-GB', {
     weekday: 'long',
@@ -119,7 +120,7 @@ export function EventCalendar({ events }: EventCalendarProps) {
         <div className="space-y-0">
           {dates.map((dateStr) => {
             const dayEvents = grouped.get(dateStr)!;
-            const today = new Date().toISOString().split('T')[0];
+            const today = getLocalDateString();
             const isToday = dateStr === today;
 
             return (

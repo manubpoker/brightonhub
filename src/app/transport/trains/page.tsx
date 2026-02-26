@@ -6,7 +6,7 @@ import { DepartureBoard } from '@/components/transport/departure-board';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Info, BookOpen, ExternalLink } from 'lucide-react';
-import { sanitizeHtml } from '@/lib/sanitize';
+import { sanitizeApiHtml } from '@/lib/sanitize';
 import { Breadcrumbs } from '@/components/shared/breadcrumbs';
 
 export default function TrainsPage() {
@@ -45,7 +45,7 @@ export default function TrainsPage() {
               <div
                 key={i}
                 className="text-sm text-muted-foreground rounded-lg bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800/30 p-3"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(msg) }}
+                dangerouslySetInnerHTML={{ __html: sanitizeApiHtml(msg) }}
               />
             ))}
           </CardContent>

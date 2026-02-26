@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ExternalLink } from 'lucide-react';
 import type { TrainService } from '@/types/domain';
 import { cn } from '@/lib/utils';
 
@@ -49,9 +50,17 @@ export function DepartureBoard({ departures, stationName, loading }: DepartureBo
       </CardHeader>
       <CardContent>
         {departures.length === 0 ? (
-          <p className="text-muted-foreground py-8 text-center">
-            No departure information available.
-          </p>
+          <div className="text-center py-8 space-y-2">
+            <p className="text-muted-foreground">No departure information available at this time.</p>
+            <a
+              href="https://www.nationalrail.co.uk/live-trains/departures/BTN/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-blue-600 hover:underline inline-flex items-center gap-1"
+            >
+              Check National Rail for live departures <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

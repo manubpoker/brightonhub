@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Activity, Waves, Wind, Zap, Shield, Train, Landmark, CloudSun, Droplets, ExternalLink, Scale, BookOpen } from 'lucide-react';
+import { Activity, Waves, Wind, Zap, Shield, Train, Landmark, CloudSun, Droplets, ExternalLink, Scale, BookOpen, MessageSquare } from 'lucide-react';
 
 const dataSources = [
   {
@@ -108,6 +108,43 @@ export default function AboutPage() {
             This platform brings together open data from multiple public APIs into one accessible
             portal, alongside curated local resources like the Student Hub, letting residents and
             students see the full picture of what&apos;s happening in their city.
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Feedback & Contact */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-blue-500" />
+            Feedback &amp; Contact
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3 text-sm text-muted-foreground">
+          <p>
+            Brighton Hub is a community-driven open data project. If you spot a bug, have a feature
+            request, or want to contribute, we&apos;d love to hear from you.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="https://github.com/anthropics/brighton-hub/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm text-blue-600 hover:bg-accent transition-colors"
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+              Report a Bug
+            </a>
+            <a
+              href="mailto:feedback@brightonhub.ai"
+              className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm text-blue-600 hover:bg-accent transition-colors"
+            >
+              <MessageSquare className="h-3.5 w-3.5" />
+              Send Feedback
+            </a>
+          </div>
+          <p className="text-xs text-muted-foreground/70">
+            All data on this platform comes from open government sources. We do not collect personal data.
           </p>
         </CardContent>
       </Card>

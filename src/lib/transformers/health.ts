@@ -1,5 +1,6 @@
 import type { NhsOdsOrganisation } from '@/types/api';
 import type { HealthFacility, HealthOverview } from '@/types/domain';
+import { BRIGHTON_HOSPITALS } from '@/lib/data/brighton-hospitals';
 
 export type HealthData = HealthOverview;
 
@@ -29,7 +30,11 @@ export function transformHealthResponse(
   organisations: NhsOdsOrganisation[],
   locations: Map<string, { lat: number; lng: number }> = new Map(),
 ): HealthData {
-  const facilities = organisations.map((org) => transformOrganisation(org, locations));
+  // Filter out ODS hospital results (unreliable via postcode) and use static data instead
+  const odsFacilities = organisations
+    .filter((org) => org.PrimaryRoleId !== 'RO108')
+    .map((org) => transformOrganisation(org, locations));
+  const facilities = [...odsFacilities, ...BRIGHTON_HOSPITALS];
 
   const counts = {
     gps: facilities.filter((f) => f.type === 'gp').length,
