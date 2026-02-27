@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Activity, Leaf, Shield, Train, Landmark, CloudSun, HeartPulse, Home, GraduationCap, HandHeart, Ticket, BookOpen, Info, Menu, X, Construction } from 'lucide-react';
+import { Waves, Leaf, Shield, Train, Landmark, CloudSun, HeartPulse, Home, GraduationCap, HandHeart, Ticket, BookOpen, Info, Menu, X, Construction } from 'lucide-react';
 import { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from './theme-toggle';
+import { SearchPalette } from '@/components/homepage/search-palette';
+import { useArea, type AreaSelection } from '@/components/homepage/area-context';
 import type { LucideIcon } from 'lucide-react';
 
 interface NavItem {
@@ -31,7 +32,57 @@ const navItems: NavItem[] = [
   { href: '/about', label: 'About', icon: Info },
 ];
 
-export function Header() {
+const areas: { value: AreaSelection; label: string }[] = [
+  { value: 'BN1', label: 'BN1' },
+  { value: 'BN2', label: 'BN2' },
+  { value: 'BN3', label: 'BN3' },
+  { value: 'ALL', label: 'AREA' },
+];
+
+function HomeHeader() {
+  const { area, setArea } = useArea();
+
+  return (
+    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      {/* Row 1: Logo, Search, Theme toggle */}
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
+          <Waves className="h-6 w-6" style={{ color: 'var(--accent-brighton)' }} />
+          <span className="text-lg font-semibold">BrightonHub</span>
+        </Link>
+
+        <div className="flex-1 flex justify-center max-w-sm mx-auto">
+          <SearchPalette />
+        </div>
+
+        <ThemeToggle />
+      </div>
+
+      {/* Row 2: Area selector pills */}
+      <div className="mx-auto max-w-7xl px-4 pb-2 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-1.5 overflow-x-auto">
+          {areas.map(({ value, label }) => (
+            <button
+              key={value}
+              onClick={() => setArea(value)}
+              className={cn(
+                'rounded-full px-3 py-1 text-xs font-semibold transition-colors whitespace-nowrap',
+                area === value
+                  ? 'text-white'
+                  : 'bg-muted text-muted-foreground hover:bg-accent'
+              )}
+              style={area === value ? { backgroundColor: 'var(--accent-brighton)' } : undefined}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function SubPageHeader() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -44,11 +95,8 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <Activity className="h-6 w-6 text-green-600" />
-          <span className="text-lg font-semibold">Brighton Hub</span>
-          <Badge variant="secondary" className="hidden sm:inline-flex">
-            BN1
-          </Badge>
+          <Waves className="h-6 w-6" style={{ color: 'var(--accent-brighton)' }} />
+          <span className="text-lg font-semibold">BrightonHub</span>
         </Link>
 
         {/* Desktop nav */}
@@ -110,4 +158,12 @@ export function Header() {
       )}
     </header>
   );
+}
+
+export function Header() {
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+
+  if (isHome) return <HomeHeader />;
+  return <SubPageHeader />;
 }
