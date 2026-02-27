@@ -70,7 +70,9 @@ export function EnvironmentCard() {
             <div className="flex items-center gap-3 rounded-lg border px-3 py-2">
               <Wind className="h-4 w-4 shrink-0 text-purple-500" />
               <div className="min-w-0 flex-1">
-                <div className="text-xs text-muted-foreground">Air Quality</div>
+                <div className="text-xs text-muted-foreground">
+                  Air Quality{airQuality.data?.reading?.stationName ? ` · ${airQuality.data.reading.stationName}` : ''}
+                </div>
                 <div className="text-sm font-medium">
                   {airQuality.data?.reading
                     ? `${airQuality.data.reading.overallBand} (${airQuality.data.reading.overallIndex} DAQI)`

@@ -7,23 +7,47 @@ export interface AirQualityData {
   alert: HazardAlert;
 }
 
-// Simplified DAQI calculation based on pollutant concentrations (ug/m3)
-function calculatePollutantIndex(name: string, value: number): { index: number; band: string } {
-  const lower = name.toLowerCase();
-  let breakpoints: number[];
+// DEFRA DAQI breakpoints (ug/m3) — only the 5 official DAQI pollutants
+// See: https://uk-air.defra.gov.uk/air-pollution/daqi
+const DAQI_BREAKPOINTS: Record<string, number[]> = {
+  'nitrogen dioxide': [0, 67, 134, 200, 267, 334, 400, 467, 534, 600],
+  'pm2.5':            [0, 12, 24, 36, 42, 47, 53, 58, 64, 70],
+  'pm10':             [0, 17, 34, 51, 59, 67, 75, 84, 92, 100],
+  'ozone':            [0, 34, 67, 100, 121, 141, 160, 188, 214, 240],
+  'sulphur dioxide':  [0, 89, 177, 266, 355, 444, 533, 711, 888, 1065],
+};
 
-  if (lower.includes('nitrogen dioxide') || lower.includes('no2')) {
-    breakpoints = [0, 67, 134, 200, 267, 334, 400, 467, 534, 600];
-  } else if (lower.includes('2.5') || lower.includes('pm2')) {
-    breakpoints = [0, 12, 24, 36, 42, 47, 53, 58, 64, 70];
-  } else if (lower.includes('10') || lower.includes('pm10')) {
-    breakpoints = [0, 17, 34, 51, 59, 67, 75, 84, 92, 100];
-  } else if (lower.includes('ozone') || lower.includes('o3')) {
-    breakpoints = [0, 34, 67, 100, 121, 141, 160, 188, 214, 240];
-  } else if (lower.includes('sulphur') || lower.includes('so2')) {
-    breakpoints = [0, 89, 177, 266, 355, 444, 533, 711, 888, 1065];
-  } else {
-    return { index: 1, band: 'Low' };
+/** Check if a pollutant name is one of the 5 official DAQI pollutants. */
+function isDaqiPollutant(name: string): boolean {
+  const lower = name.toLowerCase();
+  return (
+    lower.includes('nitrogen dioxide') ||
+    lower.includes('ozone') ||
+    lower.includes('sulphur dioxide') ||
+    /pm\s*2\.?5|particulate.*2\.5/.test(lower) ||
+    /pm\s*10|particulate.*10/.test(lower)
+  );
+}
+
+function calculatePollutantIndex(name: string, value: number): { index: number; band: string; isDaqi: boolean } {
+  const lower = name.toLowerCase();
+  let breakpoints: number[] | undefined;
+
+  if (lower.includes('nitrogen dioxide')) {
+    breakpoints = DAQI_BREAKPOINTS['nitrogen dioxide'];
+  } else if (/pm\s*2\.?5|particulate.*2\.5/.test(lower)) {
+    breakpoints = DAQI_BREAKPOINTS['pm2.5'];
+  } else if (/pm\s*10|particulate.*10/.test(lower)) {
+    breakpoints = DAQI_BREAKPOINTS['pm10'];
+  } else if (lower.includes('ozone')) {
+    breakpoints = DAQI_BREAKPOINTS['ozone'];
+  } else if (lower.includes('sulphur dioxide')) {
+    breakpoints = DAQI_BREAKPOINTS['sulphur dioxide'];
+  }
+
+  // Non-DAQI pollutant (NO, NOx, etc.) — report value but don't contribute to DAQI
+  if (!breakpoints) {
+    return { index: 1, band: 'Low', isDaqi: false };
   }
 
   let index = 1;
@@ -35,7 +59,7 @@ function calculatePollutantIndex(name: string, value: number): { index: number; 
   index = Math.min(index, 10);
 
   const daqiBand = DAQI_BANDS.find((b) => index >= b.min && index <= b.max);
-  return { index, band: daqiBand?.band ?? 'Low' };
+  return { index, band: daqiBand?.band ?? 'Low', isDaqi: true };
 }
 
 interface TimeseriesWithDistance extends UKAirTimeseriesResponse {
@@ -90,8 +114,11 @@ export function transformAirQualityFromTimeseries(
       return { name, value, unit, index, band };
     });
 
-  const overallIndex = pollutants.length > 0
-    ? Math.max(...pollutants.map((p) => p.index))
+  // DAQI is determined by the worst-performing of the 5 official pollutants only
+  // (NO2, O3, PM2.5, PM10, SO2) — not NO, NOx, or other measured species
+  const daqiPollutants = pollutants.filter((p) => isDaqiPollutant(p.name));
+  const overallIndex = daqiPollutants.length > 0
+    ? Math.max(...daqiPollutants.map((p) => p.index))
     : 1;
   const daqiBand = DAQI_BANDS.find((b) => overallIndex >= b.min && overallIndex <= b.max);
   const overallBand = daqiBand?.band ?? 'Low';

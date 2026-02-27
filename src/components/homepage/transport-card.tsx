@@ -77,9 +77,24 @@ export function TransportCard() {
             </div>
           </>
         ) : (
-          <div className="flex items-center gap-2 rounded-lg border border-dashed px-3 py-6 justify-center text-sm text-muted-foreground">
-            <Train className="h-4 w-4" />
-            No departure data available
+          <div className="space-y-3">
+            <div className="rounded-lg border border-dashed px-3 py-4 text-center text-sm text-muted-foreground">
+              <Train className="h-5 w-5 mx-auto mb-1.5 opacity-40" />
+              <p>Live departures unavailable</p>
+              <a
+                href="https://www.nationalrail.co.uk/live-trains/departures/BTN/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-blue-600 hover:underline dark:text-blue-400"
+              >
+                Check National Rail →
+              </a>
+            </div>
+            {/* Static bus row */}
+            <div className="flex items-center gap-2 rounded-lg border border-dashed px-3 py-2 text-sm text-muted-foreground">
+              <Bus className="h-4 w-4 shrink-0" />
+              <span>Brighton &amp; Hove Buses — Normal service</span>
+            </div>
           </div>
         )}
 

@@ -1,22 +1,26 @@
 // Raw Carbon Intensity API response types
-export interface CarbonIntensityResponse {
-  data: {
-    regionid: number;
-    shortname: string;
-    postcode: string;
-    data: Array<{
-      from: string;
-      to: string;
-      intensity: {
-        forecast: number;
-        index: string;
-      };
-      generationmix: Array<{
-        fuel: string;
-        perc: number;
-      }>;
+// The /regional/postcode/:postcode endpoint returns data as an array of regions,
+// while /regional/intensity/.../fw24h/postcode/:postcode returns data as a single object.
+export interface CarbonRegionData {
+  regionid: number;
+  shortname: string;
+  postcode: string;
+  data: Array<{
+    from: string;
+    to: string;
+    intensity: {
+      forecast: number;
+      index: string;
+    };
+    generationmix: Array<{
+      fuel: string;
+      perc: number;
     }>;
-  };
+  }>;
+}
+
+export interface CarbonIntensityResponse {
+  data: CarbonRegionData | CarbonRegionData[];
 }
 
 // Raw EA Flood Monitoring API response types

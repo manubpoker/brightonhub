@@ -1,4 +1,4 @@
-import type { CarbonIntensityResponse } from '@/types/api';
+import type { CarbonIntensityResponse, CarbonRegionData } from '@/types/api';
 import type { CarbonIntensity, HazardAlert } from '@/types/domain';
 import { CARBON_INDEX_TO_SEVERITY, BRIGHTON_LAT, BRIGHTON_LNG } from '@/lib/constants';
 import type { Severity } from '@/types/domain';
@@ -9,11 +9,18 @@ export interface CarbonData {
   alert: HazardAlert;
 }
 
+/** Extract the region object from a response where `data` may be an array or a single object. */
+function extractRegion(raw: CarbonIntensityResponse): CarbonRegionData | undefined {
+  if (Array.isArray(raw?.data)) return raw.data[0];
+  return raw?.data ?? undefined;
+}
+
 export function transformCarbonResponse(
   currentRaw: CarbonIntensityResponse,
   forecastRaw: CarbonIntensityResponse | null
 ): CarbonData {
-  const entry = currentRaw?.data?.data?.[0];
+  const region = extractRegion(currentRaw);
+  const entry = region?.data?.[0];
 
   if (!entry) {
     throw new Error('Unexpected carbon API response format');
@@ -49,7 +56,8 @@ export function transformCarbonResponse(
   // Transform forecast data
   let forecastEntries: CarbonIntensity[] = [];
   if (forecastRaw) {
-    const items = forecastRaw?.data?.data ?? [];
+    const forecastRegion = extractRegion(forecastRaw);
+    const items = forecastRegion?.data ?? [];
     forecastEntries = items.map(
       (item) => ({
         forecast: item.intensity.forecast,
