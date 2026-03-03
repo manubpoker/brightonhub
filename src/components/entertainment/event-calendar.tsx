@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Clock, MapPin, Music, ExternalLink } from 'lucide-react';
@@ -160,11 +161,14 @@ export function EventCalendar({ events }: EventCalendarProps) {
                         {/* Image */}
                         {event.imageUrl && (
                           <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden bg-muted">
-                            <img
+                            <Image
                               src={event.imageUrl}
-                              alt=""
+                              alt={event.name}
+                              width={80}
+                              height={80}
                               className="w-full h-full object-cover"
                               loading="lazy"
+                              unoptimized
                             />
                           </div>
                         )}
