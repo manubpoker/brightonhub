@@ -41,6 +41,7 @@ export const LAND_REGISTRY_API_URL = 'http://landregistry.data.gov.uk/landregist
 export const OVERPASS_API_URL = 'https://overpass-api.de/api/interpreter';
 export const GIVEFOOD_API_URL = 'https://www.givefood.org.uk/api/2/foodbanks/search/';
 export const POSTCODES_IO_API_URL = 'https://api.postcodes.io/postcodes';
+export const OPENMETEO_MARINE_API_URL = 'https://marine-api.open-meteo.com/v1';
 export const SKIDDLE_API_URL = 'https://www.skiddle.com/api/v1/events/search/';
 export const SKIDDLE_API_KEY = process.env.SKIDDLE_API_KEY ?? '';
 
@@ -84,6 +85,7 @@ export const API_ROUTES = {
   schools: '/api/schools',
   community: '/api/community',
   entertainment: '/api/entertainment',
+  marine: '/api/marine',
 } as const;
 
 // Polling intervals (ms)
@@ -101,6 +103,7 @@ export const POLLING = {
   schools: 24 * 60 * 60 * 1000,    // 24 hours
   community: 60 * 60 * 1000,       // 1 hour
   entertainment: 60 * 60 * 1000,   // 1 hour
+  marine: 60 * 60 * 1000,          // 1 hour
 } as const;
 
 // Severity colors

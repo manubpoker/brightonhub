@@ -209,6 +209,40 @@ export interface WeatherOverview {
   severity: Severity;
 }
 
+// Marine / Sea conditions domain types
+export interface MarineCurrent {
+  waveHeight: number;
+  waveDirection: number;
+  wavePeriod: number;
+  swellHeight: number;
+  swellDirection: number;
+  swellPeriod: number;
+  time: string;
+}
+
+export interface MarineHourly {
+  time: string;
+  waveHeight: number;
+  waveDirection: number;
+  wavePeriod: number;
+  swellHeight: number;
+}
+
+export interface MarineDaily {
+  date: string;
+  waveHeightMax: number;
+  waveDirectionDominant: number;
+  wavePeriodMax: number;
+  swellHeightMax: number;
+}
+
+export interface MarineOverview {
+  current: MarineCurrent;
+  hourly: MarineHourly[];
+  daily: MarineDaily[];
+  severity: Severity;
+}
+
 // Bathing water domain types
 export interface BeachWaterQuality {
   id: string;

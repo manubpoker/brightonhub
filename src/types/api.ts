@@ -319,6 +319,34 @@ export interface SkiddleSearchResponse {
   pagecount: number;
 }
 
+// Open-Meteo Marine API response types
+export interface OpenMeteoMarineResponse {
+  current: {
+    time: string;
+    interval: number;
+    wave_height: number;
+    wave_direction: number;
+    wave_period: number;
+    swell_wave_height: number;
+    swell_wave_direction: number;
+    swell_wave_period: number;
+  };
+  hourly: {
+    time: string[];
+    wave_height: number[];
+    wave_direction: number[];
+    wave_period: number[];
+    swell_wave_height: number[];
+  };
+  daily: {
+    time: string[];
+    wave_height_max: number[];
+    wave_direction_dominant: number[];
+    wave_period_max: number[];
+    swell_wave_height_max: number[];
+  };
+}
+
 // Open-Meteo API response types
 export interface OpenMeteoResponse {
   current: {
