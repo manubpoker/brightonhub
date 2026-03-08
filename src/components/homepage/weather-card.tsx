@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { CloudSun, Sun, Cloud, CloudRain, CloudDrizzle, CloudLightning, CloudFog, Snowflake, Wind, ArrowRight } from 'lucide-react';
+import { CloudSun, Sun, Cloud, CloudRain, CloudDrizzle, CloudLightning, CloudFog, Snowflake, Wind, Waves, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useWeather } from '@/lib/hooks/use-weather';
+import { useMarine } from '@/lib/hooks/use-marine';
 import { WMO_WEATHER_CODES } from '@/lib/constants';
 import { StatusDot } from './status-dot';
 
@@ -26,6 +27,7 @@ function degToCompass(deg: number): string {
 
 export function WeatherCard() {
   const { data, isLoading } = useWeather();
+  const { data: marineData } = useMarine();
 
   const current = data?.current;
   const today = data?.daily?.[0];
@@ -78,6 +80,16 @@ export function WeatherCard() {
                 </div>
               )}
             </div>
+
+            {marineData?.current && (
+              <div className="flex items-center gap-2 rounded-lg border px-3 py-2">
+                <Waves className="h-4 w-4 text-cyan-500 shrink-0" />
+                <div className="text-xs">
+                  <span className="font-medium">{marineData.current.waveHeight.toFixed(1)}m waves</span>
+                  <span className="text-muted-foreground"> · {marineData.current.swellHeight.toFixed(1)}m swell · {marineData.current.wavePeriod.toFixed(0)}s period</span>
+                </div>
+              </div>
+            )}
           </>
         ) : (
           <div className="text-sm text-muted-foreground text-center py-6">

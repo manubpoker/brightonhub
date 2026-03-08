@@ -5,12 +5,13 @@ import { formatDistanceToNow } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Train, Waves, CloudSun, Wind, Shield, ArrowRight } from 'lucide-react';
+import { Train, Waves, CloudSun, Wind, Shield, Anchor, ArrowRight } from 'lucide-react';
 import { useAirQuality } from '@/lib/hooks/use-air-quality';
 import { useCrime } from '@/lib/hooks/use-crime';
 import { useFlood } from '@/lib/hooks/use-flood';
 import { useWeather } from '@/lib/hooks/use-weather';
 import { useTrains } from '@/lib/hooks/use-trains';
+import { useMarine } from '@/lib/hooks/use-marine';
 import { useArea } from './area-context';
 import type { ReactNode } from 'react';
 
@@ -55,6 +56,7 @@ export function TodaySnapshot() {
   const crime = useCrime();
   const weather = useWeather();
   const trains = useTrains();
+  const marine = useMarine();
   const { area } = useArea();
 
   const loading =
@@ -88,6 +90,18 @@ export function TodaySnapshot() {
       text: `Weather: ${weather.data.current.weatherDescription} · ${weather.data.current.temperature.toFixed(1)}°C · UV ${uvIndexMax.toFixed(0)}`,
       link: '/weather',
       icon: <CloudSun className="h-3.5 w-3.5" />,
+    });
+  }
+
+  if (marine.data?.current) {
+    const wh = marine.data.current.waveHeight;
+    const seaState = wh >= 4.0 ? 'Very rough' : wh >= 2.5 ? 'Rough' : wh >= 1.25 ? 'Slight' : 'Calm';
+    const marineTone: SnapshotTone = wh >= 4.0 ? 'severe' : wh >= 2.5 ? 'warning' : wh >= 1.5 ? 'alert' : 'normal';
+    snapshotItems.push({
+      tone: marineTone,
+      text: `Sea: ${seaState} · ${wh.toFixed(1)}m waves · ${marine.data.current.swellHeight.toFixed(1)}m swell`,
+      link: '/weather',
+      icon: <Anchor className="h-3.5 w-3.5" />,
     });
   }
 
@@ -162,6 +176,7 @@ export function TodaySnapshot() {
     ['Transport', trains.dataUpdatedAt],
     ['Air quality', airQuality.dataUpdatedAt],
     ['Crime', crime.dataUpdatedAt],
+    ['Sea', marine.dataUpdatedAt],
   ] as const;
 
   if (snapshotItems.length === 0) {
