@@ -28,7 +28,7 @@ export const DASHBOARDS: DashboardConfig[] = [
     id: 'crime',
     title: 'Crime & Safety',
     shortTitle: 'Crime',
-    description: 'Crime data across BN1-BN3, category breakdowns, and policing',
+    description: 'Crime data across BN1–BN43, category breakdowns, and policing',
     href: '/crime',
     icon: Shield,
     color: 'text-blue-600',

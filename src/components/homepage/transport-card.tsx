@@ -73,14 +73,14 @@ export function TransportCard() {
             {/* Static bus row */}
             <div className="flex items-center gap-2 rounded-lg border border-dashed px-3 py-2 text-sm text-muted-foreground">
               <Bus className="h-4 w-4 shrink-0" />
-              <span>Brighton &amp; Hove Buses — Normal service</span>
+              <span>Brighton &amp; Hove Buses — data coming soon</span>
             </div>
           </>
         ) : (
           <div className="space-y-3">
             <div className="rounded-lg border border-dashed px-3 py-4 text-center text-sm text-muted-foreground">
               <Train className="h-5 w-5 mx-auto mb-1.5 opacity-40" />
-              <p>Live departures unavailable</p>
+              <p>Live departures are temporarily unavailable</p>
               <a
                 href="https://www.nationalrail.co.uk/live-trains/departures/BTN/"
                 target="_blank"
@@ -93,7 +93,7 @@ export function TransportCard() {
             {/* Static bus row */}
             <div className="flex items-center gap-2 rounded-lg border border-dashed px-3 py-2 text-sm text-muted-foreground">
               <Bus className="h-4 w-4 shrink-0" />
-              <span>Brighton &amp; Hove Buses — Normal service</span>
+              <span>Brighton &amp; Hove Buses — data coming soon</span>
             </div>
           </div>
         )}
@@ -102,7 +102,7 @@ export function TransportCard() {
           href="/transport"
           className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors pt-1"
         >
-          View all transport <ArrowRight className="h-3 w-3" />
+          Open transport dashboard <ArrowRight className="h-3 w-3" />
         </Link>
       </CardContent>
     </Card>

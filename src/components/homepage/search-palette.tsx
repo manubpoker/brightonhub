@@ -60,7 +60,11 @@ export function SearchPalette() {
     <>
       {/* Trigger button */}
       <button
+        type="button"
         onClick={handleOpen}
+        aria-expanded={open}
+        aria-controls="search-palette-dialog"
+        aria-label="Open dashboard search"
         className="flex items-center gap-2 rounded-lg border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent w-full max-w-xs sm:max-w-sm"
       >
         <Search className="h-4 w-4 shrink-0" />
@@ -78,13 +82,23 @@ export function SearchPalette() {
             className="fixed inset-0 bg-black/50 backdrop-blur-sm"
             onClick={handleClose}
           />
-          <div className="relative z-10 w-full max-w-lg rounded-xl border bg-card shadow-2xl">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search Brighton Hub dashboards"
+            id="search-palette-dialog"
+            className="relative z-10 w-full max-w-lg rounded-xl border bg-card shadow-2xl"
+          >
             <div className="flex items-center gap-2 border-b px-4 py-3">
               <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
               <input
                 ref={inputRef}
                 value={query}
+                aria-label="Search Brighton Hub dashboards"
                 onChange={(e) => { setQuery(e.target.value); setSelectedIndex(0); }}
+                role="combobox"
+                aria-expanded={filtered.length > 0}
+                aria-controls="search-palette-results"
                 onKeyDown={(e) => {
                   if (e.key === 'ArrowDown') {
                     e.preventDefault();
@@ -99,11 +113,16 @@ export function SearchPalette() {
                 placeholder="Search dashboards..."
                 className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
-              <button onClick={handleClose} className="rounded p-1 hover:bg-accent">
+              <button
+                type="button"
+                onClick={handleClose}
+                className="rounded p-1 hover:bg-accent"
+                aria-label="Close search"
+              >
                 <X className="h-4 w-4 text-muted-foreground" />
               </button>
             </div>
-            <div className="max-h-80 overflow-y-auto p-2">
+            <div className="max-h-80 overflow-y-auto p-2" id="search-palette-results" role="listbox">
               {filtered.length === 0 ? (
                 <p className="px-3 py-6 text-center text-sm text-muted-foreground">
                   No dashboards found.
@@ -112,9 +131,12 @@ export function SearchPalette() {
                 filtered.map((d, i) => {
                   const Icon = d.icon;
                   return (
-                    <button
+                      <button
                       key={d.id}
                       onClick={() => handleSelect(d.href)}
+                      role="option"
+                      aria-selected={i === selectedIndex}
+                      type="button"
                       className={cn(
                         'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors',
                         i === selectedIndex

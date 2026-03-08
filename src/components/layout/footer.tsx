@@ -35,8 +35,8 @@ export function Footer() {
             <a
               href="https://data.police.uk/"
               className="underline hover:text-foreground"
-              target="_blank"
               rel="noopener noreferrer"
+              target="_blank"
             >
               Police.uk
             </a>
@@ -60,12 +60,30 @@ export function Footer() {
             </a>
             {' · '}
             <a
+              href="https://www.landregistry.data.gov.uk/public/"
+              className="underline hover:text-foreground"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HM Land Registry
+            </a>
+            {' · '}
+            <a
               href="https://environment.data.gov.uk/bwq/profiles/"
               className="underline hover:text-foreground"
               target="_blank"
               rel="noopener noreferrer"
             >
               EA Bathing Water
+            </a>
+            {' · '}
+            <a
+              href="https://www.nationalrail.co.uk/"
+              className="underline hover:text-foreground"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              National Rail
             </a>
           </p>
           <p>
