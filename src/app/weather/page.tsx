@@ -3,6 +3,7 @@
 import { useWeather } from '@/lib/hooks/use-weather';
 import { StatusCard } from '@/components/shared/status-card';
 import { ErrorState } from '@/components/shared/error-state';
+import { RefreshButton } from '@/components/shared/refresh-button';
 import { ForecastCard } from '@/components/weather/forecast-card';
 import { SeaConditions } from '@/components/weather/sea-conditions';
 import dynamic from 'next/dynamic';
@@ -45,11 +46,14 @@ export default function WeatherPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Weather</h1>
-        <p className="text-muted-foreground mt-1">
-          Current conditions and 7-day forecast for Brighton & Hove
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">Weather</h1>
+          <p className="text-muted-foreground mt-1">
+            Current conditions and 7-day forecast for Brighton &amp; Hove
+          </p>
+        </div>
+        <RefreshButton className="mt-1" />
       </div>
 
       {/* Current conditions */}

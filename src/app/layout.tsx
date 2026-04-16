@@ -20,9 +20,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://brightonhub.ai"),
   title: "Brighton Hub",
   description:
     "Real-time civic data for Brighton & Hove — environment, crime, transport, and planning dashboards in one place.",
+  applicationName: "Brighton Hub",
+  keywords: [
+    "Brighton",
+    "Brighton & Hove",
+    "civic data",
+    "open data",
+    "air quality",
+    "flood warnings",
+    "carbon intensity",
+    "crime statistics",
+    "train departures",
+    "planning applications",
+  ],
+  icons: { icon: "/favicon.ico" },
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Brighton Hub",
     description:
@@ -30,6 +46,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
     siteName: "Brighton Hub",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Brighton Hub",
+    description:
+      "Real-time civic data for Brighton & Hove — environment, crime, transport, and planning in one place.",
   },
 };
 
@@ -39,7 +62,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en-GB" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
@@ -62,6 +85,41 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         )}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'WebSite',
+                  '@id': 'https://brightonhub.ai/#website',
+                  url: 'https://brightonhub.ai/',
+                  name: 'Brighton Hub',
+                  description:
+                    'Real-time civic data for Brighton & Hove — environment, crime, transport, and planning dashboards in one place.',
+                  inLanguage: 'en-GB',
+                },
+                {
+                  '@type': 'Organization',
+                  '@id': 'https://brightonhub.ai/#organization',
+                  name: 'Brighton Hub',
+                  url: 'https://brightonhub.ai/',
+                  areaServed: {
+                    '@type': 'City',
+                    name: 'Brighton and Hove',
+                    address: {
+                      '@type': 'PostalAddress',
+                      addressLocality: 'Brighton',
+                      addressRegion: 'East Sussex',
+                      addressCountry: 'GB',
+                    },
+                  },
+                },
+              ],
+            }),
+          }}
+        />
       </body>
     </html>
   );

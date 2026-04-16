@@ -2,6 +2,7 @@
 
 import { EnvStatusSummary } from '@/components/environment/env-status-summary';
 import { AlertPanel } from '@/components/shared/alert-panel';
+import { RefreshButton } from '@/components/shared/refresh-button';
 import { BrightonMap, type MapMarker } from '@/components/map/brighton-map';
 import { useCarbon } from '@/lib/hooks/use-carbon';
 import { useFlood, useFloodStations } from '@/lib/hooks/use-flood';
@@ -105,6 +106,16 @@ export default function EnvironmentDashboard() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 space-y-6">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">Environment</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            {lastUpdated ? `Updated ${lastUpdated}` : 'Live environmental monitoring for Brighton & Hove'}
+          </p>
+        </div>
+        <RefreshButton className="mt-1" />
+      </div>
+
       {/* Status cards row */}
       <EnvStatusSummary />
 

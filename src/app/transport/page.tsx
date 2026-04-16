@@ -3,6 +3,7 @@
 import { useTrains } from '@/lib/hooks/use-trains';
 import { StatusCard } from '@/components/shared/status-card';
 import { ErrorState } from '@/components/shared/error-state';
+import { RefreshButton } from '@/components/shared/refresh-button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Train, AlertTriangle, Bus, Info, BookOpen, ExternalLink } from 'lucide-react';
@@ -27,11 +28,14 @@ export default function TransportPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Transport</h1>
-        <p className="text-muted-foreground mt-1">
-          Live train status and transport disruption alerts for Brighton
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">Transport</h1>
+          <p className="text-muted-foreground mt-1">
+            Live train status and transport disruption alerts for Brighton
+          </p>
+        </div>
+        <RefreshButton className="mt-1" />
       </div>
 
       {/* Summary cards */}

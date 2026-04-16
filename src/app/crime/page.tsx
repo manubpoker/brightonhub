@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useCrime } from '@/lib/hooks/use-crime';
 import { StatusCard } from '@/components/shared/status-card';
 import { ErrorState } from '@/components/shared/error-state';
+import { RefreshButton } from '@/components/shared/refresh-button';
 import { CrimeMap } from '@/components/crime/crime-map';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -34,11 +35,14 @@ export default function CrimePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Crime & Safety</h1>
-        <p className="text-muted-foreground mt-1">
-          Monthly crime data across Brighton & Hove urban area from Police.uk open data
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">Crime &amp; Safety</h1>
+          <p className="text-muted-foreground mt-1">
+            Monthly crime data across Brighton &amp; Hove urban area from Police.uk open data
+          </p>
+        </div>
+        <RefreshButton className="mt-1" />
       </div>
 
       {/* Summary cards */}

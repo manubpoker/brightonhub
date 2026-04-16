@@ -1,7 +1,14 @@
+import type { Metadata } from 'next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Activity, Waves, Wind, Zap, Shield, Train, Landmark, CloudSun, Droplets, ExternalLink, Scale, BookOpen, MessageSquare } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'About — Brighton Hub',
+  description:
+    'About Brighton Hub: data sources, update frequency, methodology, and open-data licences behind every dashboard on brightonhub.ai.',
+};
 
 const dataSources = [
   {
